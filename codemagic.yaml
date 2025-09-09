@@ -26,6 +26,7 @@ workflows:
           echo $GCLOUD_SERVICE_JSON_B64 | base64 --decode > android/app/google-services.json
           echo $GCLOUD_SERVICE_PLIST_B64 | base64 --decode > ios/Runner/GoogleService-Info.plist
           echo $FIREBASE_OPTIONS | base64 --decode > lib/firebase_options.dart
+          echo $FIREBASE_JSON | base64 --decode > firebase.json
       - name: Set up code signing settings on Xcode project
         script: |
           xcode-project use-profiles \
