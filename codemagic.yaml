@@ -11,10 +11,7 @@ workflows:
         - firebase_secrets
         - algolia
       ios_signing:
-        provisioning_profiles:
-          - parentia
-        certificates:
-          - parentia
+        distribution_type: app_store
         bundle_identifier: com.merten.parentia
     scripts: 
       - name: Generate .env file
