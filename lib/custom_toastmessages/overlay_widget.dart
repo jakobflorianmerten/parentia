@@ -122,6 +122,7 @@ class OverlayMessageWidgetState extends State<OverlayMessageWidget>
                         color: textColor,
                       ),
                     ),
+                    addVerticalSpace(20)
                   ],
                 ),
               ),

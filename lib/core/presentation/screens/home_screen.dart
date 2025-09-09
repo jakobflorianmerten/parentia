@@ -51,17 +51,14 @@ class HomeScreen extends StatelessWidget {
                           pinned: true,
                           delegate: CustomAppBarDelegate(),
                         ),
-                        SliverToBoxAdapter(
-                          child: addVerticalSpace(20),
-                        ),
-                        SliverPersistentHeader(
-                          delegate: HomeBalanceCardDelegate(
-                            balance: state.currentBalance,
+                        SliverPadding(
+                          padding: EdgeInsetsGeometry.symmetric(vertical: 20),
+                          sliver: SliverPersistentHeader(
+                            delegate: HomeBalanceCardDelegate(
+                              balance: state.currentBalance,
+                            ),
+                            pinned: true,
                           ),
-                          pinned: true,
-                        ),
-                        SliverToBoxAdapter(
-                          child: addVerticalSpace(40),
                         ),
                         state.activeTransactions.length == 0 && state.notActiveTransactions.length == 0
                             ? SliverToBoxAdapter(
@@ -119,6 +116,9 @@ class HomeScreen extends StatelessWidget {
                                 transaction: state.notActiveTransactions[index],
                               ),
                         ),
+                        SliverToBoxAdapter(
+                          child: addVerticalSpace(150)
+                        )
                       ],
                     ),
                   ),

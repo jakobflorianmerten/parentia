@@ -42,7 +42,7 @@ class MoreScreen extends StatelessWidget {
                     GoRouter.of(context).push('/account');
                   },
                 ),
-                addVerticalSpace(200),
+                addVerticalSpace(25),
                 ProfileElementWidget(),
               ],
             ),

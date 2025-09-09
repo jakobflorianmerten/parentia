@@ -25,7 +25,11 @@ class HomeBalanceCardDelegate extends SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
+    print("ShrinkOfset: " + shrinkOffset.toString());
     final progress = shrinkOffset / maxExtent;
+    print("progress: " + progress.toString());
+    final height = maxExtent - (maxExtent - minExtent) * progress;
+    print('height: ' + height.toString());
     return Container(
       width: double.infinity,
       height: maxExtent - (maxExtent - minExtent) * progress,
@@ -35,7 +39,7 @@ class HomeBalanceCardDelegate extends SliverPersistentHeaderDelegate {
       child: Stack(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(20), 
+            borderRadius: BorderRadius.circular(20),
             child: Image.asset(
               "assets/images/balance_card_background.png",
               width: double.infinity,

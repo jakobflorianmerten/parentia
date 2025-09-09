@@ -1,35 +1,4 @@
 workflows: 
-  android-workflow: 
-    name: Android Internal Testing Workflow
-    environment: 
-      flutter: stable
-      groups: 
-        - google_credentials
-      xcode: latest
-      cocoapods: default
-    max_build_duration: 30
-    scripts:
-      - name: Setup the keystore
-        script: | 
-          echo $KEYSTORE_FILE | base64 --decode > /tmp/keystore.jks
-          cat >> "$CM_BUILD_DIR/android/key.properties" << EOF
-          storePassword=$KEYSTORE_PASSWORD
-          keyPassword=$KEYSTORE_KEY_PASSWORD
-          keyAlias=upload
-          storeFile=/tmp/keystore.jks
-          EOF
-      - name: Build Android app
-        script: |
-          cd $CM_BUILD_DIR
-          flutter pub get
-          flutter build appbundle --release
-    artifacts: 
-      - build/**/outputs/**/*.aab
-    publishing: 
-      google_play: 
-        credentials: $GOOGLE_PLAY_SERVICE_ACCOUNT
-        track: internal
-        submit_as_draft: true
   ios-workflow: 
     name: iOS Internal Testing with Testflight Workflow
     max_build_duration: 30
@@ -37,10 +6,27 @@ workflows:
       app_store_connect: MERTEN
     environment: 
       flutter: stable
+      groups: 
+        - ios
+        - firebase_secrets
+        - algolia
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: com.example.parentia
-    scripts:  
+        provisioning_profiles:
+          - parentia
+        certificates:
+          - parentia
+        bundle_identifier: com.merten.parentia
+    scripts: 
+      - name: Generate .env file
+        script: | 
+          echo "ALGOLIA_APP_ID=$ALGOLIA_APP_ID" >>.env
+          echo "ALGOLIA_API_KEY=$ALGOLIA_API_KEY" >>.env
+      - name: Decode Firebase config files
+        script: | 
+          echo $GCLOUD_SERVICE_JSON_B64 | base64 --decode > android/app/google-services.json
+          echo $GCLOUD_SERVICE_PLIST_B64 | base64 --decode > ios/Runner/GoogleService-Info.plist
+          echo $FIREBASE_OPTIONS | base64 --decode > lib/firebase_options.dart
       - name: Set up code signing settings on Xcode project
         script: |
           xcode-project use-profiles \
@@ -50,7 +36,10 @@ workflows:
           flutter packages pub get
       - name: Flutter build ipa
         script: | 
-          flutter build ipa --release --export-options-plist=export_options.plist
+          BUILD_NUMBER=$(($(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID") + 1))
+          flutter build ipa --release \
+            --build-name=1.0.$BUILD_NUMBER \
+            --build-number=$BUILD_NUMBER
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
@@ -60,5 +49,5 @@ workflows:
           auth: integration
           submit_to_testflight: true
           beta_groups: 
-            - internal
+            - "internal"
           submit_to_app_store: false

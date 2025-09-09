@@ -28,8 +28,12 @@ class TransactionDetailScreen extends StatelessWidget {
             state.transactionId == transaction.id) {
           MessageService.show(
             context,
-            title: AppLocalizations.of(context)!.success_transactionCreatedTitle,
-            message: AppLocalizations.of(context)!.success_transactionCreatedDescription,
+            title: AppLocalizations.of(
+              context,
+            )!.success_transactionCreatedTitle,
+            message: AppLocalizations.of(
+              context,
+            )!.success_transactionCreatedDescription,
             type: MessageType.success,
           );
           Navigator.of(context).pop();
@@ -43,82 +47,88 @@ class TransactionDetailScreen extends StatelessWidget {
             child: Center(child: CustomLoadingAnimationElement()),
           );
 
-        return Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: SizedBox(
-            height: screenHeight * 0.8,
-            child: Column(
+        return SafeArea(
+          child: Container(
+            height: screenHeight * 0.6, 
+            padding: const EdgeInsets.all(20.0),
+            child: Stack(
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      InformationWidgetWithChild(
-                        label: AppLocalizations.of(context)!.debtor,
-                        child: UserWidget(
-                          profilePicture: transaction.debtorProfilePicture,
-                          name: transaction.isCreditor == false
-                              ? transaction.debtorName + ' (Du)'
-                              : transaction.debtorName,
-                        ),
-                      ),
-                      addVerticalSpace(40),
-                      InformationWidgetWithChild(
-                        label: AppLocalizations.of(context)!.creditor,
-                        child: UserWidget(
-                          profilePicture: transaction.creditorProfilePicture,
-                          name: transaction.isCreditor == true
-                              ? transaction.creditorName + ' (Du)'
-                              : transaction.creditorName,
-                        ),
-                      ),
-                      addVerticalSpace(40),
-                      InformationWidgetWithChild(
-                        label: AppLocalizations.of(context)!.amount_in_euros,
-                        child: Text(
-                          euroFormat.format(transaction.amount.getOrCrash()),
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ),
-                      addVerticalSpace(40),
-                      InformationWidgetWithChild(
-                        label: AppLocalizations.of(context)!.paymentDate,
-                        child: Text(
-                          formattedDate,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
                 transaction.isCreditor == false
-                    ? SafeArea(
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 20.0),
-                          child: CustomClickedElement(
-                            child: Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.all(18),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.primary,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  AppLocalizations.of(context)!.pay,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
+                    ? Positioned(
+                        bottom: 20,
+                        right: 0,
+                        child: CustomClickedElement(
+                          child: Container(
+                            padding: EdgeInsets.all(18),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.primary,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Center(
+                              child: Text(
+                                AppLocalizations.of(context)!.pay,
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),
-                            onPressed: () {
-                              BlocProvider.of<TransactionBloc>(context).add(
-                                TransactionEvent.payTransaction(transaction.id),
-                              );
-                            },
                           ),
+                          onPressed: () {
+                            BlocProvider.of<TransactionBloc>(context).add(
+                              TransactionEvent.payTransaction(transaction.id),
+                            );
+                          },
                         ),
                       )
                     : Container(),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InformationWidgetWithChild(
+                          label: AppLocalizations.of(context)!.debtor,
+                          child: UserWidget(
+                            profilePicture: transaction.debtorProfilePicture,
+                            name: transaction.isCreditor == false
+                                ? transaction.debtorName + ' (Du)'
+                                : transaction.debtorName,
+                          ),
+                        ),
+                        addVerticalSpace(40),
+                        InformationWidgetWithChild(
+                          label: AppLocalizations.of(context)!.creditor,
+                          child: UserWidget(
+                            profilePicture:
+                                transaction.creditorProfilePicture,
+                            name: transaction.isCreditor == true
+                                ? transaction.creditorName + ' (Du)'
+                                : transaction.creditorName,
+                          ),
+                        ),
+                        addVerticalSpace(40),
+                        InformationWidgetWithChild(
+                          label: AppLocalizations.of(
+                            context,
+                          )!.amount_in_euros,
+                          child: Text(
+                            euroFormat.format(
+                              transaction.amount.getOrCrash(),
+                            ),
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
+                        addVerticalSpace(40),
+                        InformationWidgetWithChild(
+                          label: AppLocalizations.of(context)!.paymentDate,
+                          child: Text(
+                            formattedDate,
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
+                        addVerticalSpace(30)
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

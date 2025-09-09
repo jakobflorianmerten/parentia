@@ -69,6 +69,9 @@ class TransactionHistoryScreen extends StatelessWidget {
                                       ),
                                     ),
                             ),
+                            SliverToBoxAdapter(
+                              child: addVerticalSpace(30)
+                            )
                           ],
                         );
                       }

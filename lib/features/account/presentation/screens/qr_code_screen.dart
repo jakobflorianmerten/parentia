@@ -16,6 +16,7 @@ class QrCodeScreen extends StatelessWidget {
       child: Column(
         children: [
           Container(
+            constraints: BoxConstraints(maxWidth: 400),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
@@ -34,6 +35,7 @@ class QrCodeScreen extends StatelessWidget {
           addVerticalSpace(40),
           CustomClickedElement(
             child: Container(
+              constraints: BoxConstraints(maxWidth: 400),
               width: double.infinity,
               padding: EdgeInsets.all(20),
               child: Center(

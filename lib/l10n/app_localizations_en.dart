@@ -128,7 +128,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get amount_in_euros => 'Amount in euros';
 
   @override
-  String get pay => 'Mark as paid';
+  String get pay => 'Payed';
 
   @override
   String get reauthenticateDescription =>

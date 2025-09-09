@@ -335,7 +335,7 @@ abstract class AppLocalizations {
   /// No description provided for @pay.
   ///
   /// In en, this message translates to:
-  /// **'Mark as paid'**
+  /// **'Payed'**
   String get pay;
 
   /// No description provided for @reauthenticateDescription.

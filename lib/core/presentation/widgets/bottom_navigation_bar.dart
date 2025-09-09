@@ -1,12 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:parentia/core/get_it.dart';
 import 'package:parentia/core/presentation/widgets/custom_button.dart';
 import 'package:parentia/core/presentation/widgets/custom_clicked_element.dart';
 import 'package:parentia/core/presentation/widgets/flutter_helper_methods.dart';
-import 'package:parentia/features/transaction/application/blocs/new_transaction_bloc/new_transaction_bloc.dart';
 import 'package:parentia/features/transaction/presentation/screens/modal_sheet.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
@@ -46,10 +42,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        padding: EdgeInsets.only(left: 20, right: 20),
-        height: 100,
+        padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+        height: 120,
         width: double.infinity,
-        color: Colors.transparent,
+        color: Theme.of(context).colorScheme.surface,
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [

@@ -10,10 +10,13 @@ class InitialScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: Stack(
         children: [
-          Image.asset('assets/images/splash_background.png'),
+          Image.asset(
+            'assets/images/splash_background.png',
+            width: double.infinity, 
+            fit: BoxFit.fitWidth
+          ),
           Positioned(
             bottom: 10,
             left: 0,

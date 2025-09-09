@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -24,13 +23,26 @@ class SignupScreen extends StatelessWidget {
         state.authFailureOrSuccessOption.fold(() {}, (either) {
           either.fold(
             (failure) {
-              String errTitle = AppLocalizations.of(context)!.error_defaultMessageTitle;
-              String errMessage = AppLocalizations.of(context)!.error_defaultMessageDescription;
+              String errTitle = AppLocalizations.of(
+                context,
+              )!.error_defaultMessageTitle;
+              String errMessage = AppLocalizations.of(
+                context,
+              )!.error_defaultMessageDescription;
               if (failure is EmailAlreadyInUse) {
-                errTitle = AppLocalizations.of(context)!.error_signupEmailAlreadyInUseTitle;
-                errMessage = AppLocalizations.of(context)!.error_signupEmailAlreadyInUseDescription;
+                errTitle = AppLocalizations.of(
+                  context,
+                )!.error_signupEmailAlreadyInUseTitle;
+                errMessage = AppLocalizations.of(
+                  context,
+                )!.error_signupEmailAlreadyInUseDescription;
               }
-              MessageService.show(context, title: errTitle, message: errMessage, type: MessageType.error);
+              MessageService.show(
+                context,
+                title: errTitle,
+                message: errMessage,
+                type: MessageType.error,
+              );
             },
             (_) {
               GoRouter.of(context).go('/verify-email');
@@ -71,24 +83,31 @@ class SignupScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: CustomButton(
-                      onPressed: () {
-                        BlocProvider.of<RegisterBloc>(
-                          context,
-                        ).add(RegisterEvent.signUpRequested());
-                      },
-                      isPrimaryButton: true,
-                      icon: Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        size: 20,
-                      ),
-                      height: 55,
-                      width: 55,
-                      padding: EdgeInsets.all(0),
-                    ),
+                  BlocBuilder<RegisterBloc, RegisterState>(
+                    builder: (context, state) {
+                      return Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Opacity(
+                          opacity: state.email.isValid() && state.password.isValid() ? 1 : 0.4,
+                          child: CustomButton(
+                            onPressed: () {
+                              BlocProvider.of<RegisterBloc>(
+                                context,
+                              ).add(RegisterEvent.signUpRequested());
+                            },
+                            isPrimaryButton: true,
+                            icon: Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              size: 20,
+                            ),
+                            height: 55,
+                            width: 55,
+                            padding: EdgeInsets.all(0),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

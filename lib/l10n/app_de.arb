@@ -38,7 +38,7 @@
   "creditor": "Kreditgeber", 
   "debtor": "Schuldner", 
   "amount_in_euros": "Betrag in Euro",
-  "pay": "Als bezahlt markieren",
+  "pay": "Bezahlt",
   "reauthenticateDescription": "Um sicherzustellen, dass nur Sie Änderungen an Ihrem Konto vornehmen können, müssen wir Ihre Identität überprüfen, bevor wir Ihr Konto löschen.", 
   "transaction_status_pending": "Ausstehend", 
   "transaction_status_active": "Aktiv", 

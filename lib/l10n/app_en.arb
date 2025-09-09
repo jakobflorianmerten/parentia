@@ -38,7 +38,7 @@
   "creditor": "Creditor", 
   "debtor": "Debtor", 
   "amount_in_euros": "Amount in euros",
-  "pay": "Mark as paid",
+  "pay": "Payed",
   "reauthenticateDescription": "To ensure that only you can make changes to your account, we need to verify your identity before deleting your account.", 
   "transaction_status_pending": "Pending", 
   "transaction_status_active": "Active", 
