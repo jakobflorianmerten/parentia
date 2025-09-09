@@ -11,7 +11,6 @@ workflows:
         - firebase_secrets
         - algolia
       ios_signing:
-        distribution_type: app_store
         provisioning_profiles:
           - parentia
         certificates:
