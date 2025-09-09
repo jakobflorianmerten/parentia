@@ -1,0 +1,91 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:parentia/core/blocs/qr_code_user_bloc/qr_code_user_bloc.dart';
+import 'package:parentia/core/get_it.dart';
+import 'package:parentia/core/presentation/animation/custom_drawer.dart';
+import 'package:parentia/core/presentation/animation/custom_loading_animation_element.dart';
+import 'package:parentia/core/presentation/widgets/bottom_navigation_bar.dart';
+import 'package:parentia/core/push_notifications_helpers.dart';
+import 'package:parentia/features/account/application/blocs/current_user/current_user_bloc.dart';
+import 'package:parentia/features/account/application/blocs/load_notifications/load_notifications_bloc.dart';
+import 'package:parentia/features/notification/presentation/screens/notifications_screen.dart';
+import 'package:parentia/features/transaction/application/blocs/transaction/transaction_bloc.dart';
+import 'package:parentia/features/transaction/presentation/screens/modal_sheet.dart';
+import 'package:provider/provider.dart';
+
+class MainNavigationScaffold extends StatelessWidget {
+  final Widget child;
+  const MainNavigationScaffold({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    final location = GoRouterState.of(context).uri.toString();
+
+    if (location.startsWith('/more/transaction-history') ||
+        location.startsWith('/more/account')) {
+      return child;
+    }
+
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => locator<TransactionBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => locator<QrCodeUserBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => locator<LoadNotificationsBloc>(),
+        ),
+      ],
+      child: BlocConsumer<CurrentUserBloc, CurrentUserState>(
+        listener: (context, state) {
+          if (state is CurrentUserStateNotAuthenticated) {
+            GoRouter.of(context).go('/initial');
+          }
+        },
+        builder: (context, state) {
+          if (state is CurrentUserStateAuthenticateWithAccount) {
+            requestPermissionAndSaveToken(state.user);
+            return ChangeNotifierProvider(
+              create: (_) => DrawerControllerModel(),
+              child: CustomAnimationDrawer(
+                drawer: NotificationsScreen(),
+                child: Scaffold(
+                  body: Stack(
+                    children: [
+                      BlocConsumer<QrCodeUserBloc, QrCodeUserState>(
+                        listener: (context, state) {
+                          if (state is QrCodeUserStateSuccess) {
+                            showTransactionWoltModalSheet(
+                              context,
+                              user: state.user,
+                            );
+                          }
+                        },
+                        builder: (context, state) {
+                          if (state is QrCodeUserStateLoading) {
+                            return Center(
+                              child: CustomLoadingAnimationElement(),
+                            );
+                          }
+                          return child;
+                        },
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: CustomBottomNavigationBar(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
+          return Container();
+        },
+      ),
+    );
+  }
+}
