@@ -1,5 +1,4 @@
 import 'package:device_preview/device_preview.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,10 +19,10 @@ void main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await NotificationService().initialize();
   //FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
   setup();
-  await setupPushNotifications();
   await dotenv.load(fileName: ".env");
   runApp(
     DevicePreview(
@@ -37,9 +36,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return NotificationsWrapper(
-      child: GoRouterWrapperWidget(),
-    );
+    return GoRouterWrapperWidget();
   }
 }
 
@@ -75,28 +72,5 @@ class GoRouterWrapperWidget extends StatelessWidget {
         );
       },
     );
-  }
-}
-
-class NotificationsWrapper extends StatefulWidget {
-  final Widget child;
-  const NotificationsWrapper({super.key, required this.child});
-
-  @override
-  State<NotificationsWrapper> createState() => _NotificationsWrapperState();
-}
-
-class _NotificationsWrapperState extends State<NotificationsWrapper> {
-  @override
-  void initState() {
-    super.initState();
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      showLocalNotification(message);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return widget.child;
   }
 }

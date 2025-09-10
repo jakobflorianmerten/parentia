@@ -14,9 +14,36 @@ import 'package:parentia/features/transaction/application/blocs/transaction/tran
 import 'package:parentia/features/transaction/presentation/screens/modal_sheet.dart';
 import 'package:provider/provider.dart';
 
-class MainNavigationScaffold extends StatelessWidget {
+class MainNavigationScaffold extends StatefulWidget {
   final Widget child;
   const MainNavigationScaffold({super.key, required this.child});
+
+  @override
+  State<MainNavigationScaffold> createState() => _MainNavigationScaffoldState();
+}
+
+class _MainNavigationScaffoldState extends State<MainNavigationScaffold>
+    with WidgetsBindingObserver {
+  final NotificationService _notificationService = NotificationService();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _notificationService.checkPermissionOnAppResume();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +51,7 @@ class MainNavigationScaffold extends StatelessWidget {
 
     if (location.startsWith('/more/transaction-history') ||
         location.startsWith('/more/account')) {
-      return child;
+      return widget.child;
     }
 
     return MultiBlocProvider(
@@ -47,7 +74,7 @@ class MainNavigationScaffold extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is CurrentUserStateAuthenticateWithAccount) {
-            requestPermissionAndSaveToken(state.user);
+            _notificationService.requestPermission();
             return ChangeNotifierProvider(
               create: (_) => DrawerControllerModel(),
               child: CustomAnimationDrawer(
@@ -70,7 +97,7 @@ class MainNavigationScaffold extends StatelessWidget {
                               child: CustomLoadingAnimationElement(),
                             );
                           }
-                          return child;
+                          return widget.child;
                         },
                       ),
                       Align(

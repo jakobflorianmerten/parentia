@@ -272,6 +272,18 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
+  Future<Either<UserFailures, Unit>> deleteNotificationTokenFromCurrentLoggedInUser(String uid) async {
+    try {
+      await _firestore.collection('users').doc(uid).update({
+        'fcmToken': '',
+      });
+      return right(unit);
+    } on PlatformException catch (e) {
+      return left(UserFailures.serverError());
+    }
+  }
+
+  @override
   Future<Either<UserFailures, List<Notification>>> loadAllNotificationsByUserId(
     String uid,
   ) async {

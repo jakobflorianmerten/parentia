@@ -53,8 +53,13 @@ class CurrentUserBloc extends Bloc<CurrentUserEvent, CurrentUserState> {
       );
     });
     on<SignOutCurrentUser>((event, emit) async {
-      await _authRepo.signOut();
-      emit(CurrentUserState.notAuthenticated());
+      if (state is CurrentUserStateAuthenticateWithAccount) {
+        await _userRepo.deleteNotificationTokenFromCurrentLoggedInUser(
+          (state as CurrentUserStateAuthenticateWithAccount).user.id,
+        );
+        await _authRepo.signOut();
+        emit(CurrentUserState.notAuthenticated());
+      }
     });
     on<CurrentUserUpdate>((event, emit) {
       emit(CurrentUserState.authenticatedWithUserAccount(event.user));

@@ -1,44 +1,136 @@
-// 1) Instanz des Plugins
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:parentia/core/get_it.dart';
 import 'package:parentia/features/account/domain/entities/user.dart';
 import 'package:parentia/features/account/infrastructure/repositories/user_repository.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-Future<void> setupPushNotifications() async {
-  // 4) Initialisierung flutter_local_notifications
-  const AndroidInitializationSettings initAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
-  const DarwinInitializationSettings initIOS = DarwinInitializationSettings(
-    requestAlertPermission: true,
-    requestBadgePermission: true,
-    requestSoundPermission: true,
-  );
-  const InitializationSettings initSettings = InitializationSettings(
-    android: initAndroid,
-    iOS: initIOS,
-  );
-  await flutterLocalNotificationsPlugin.initialize(
-    initSettings,
-    onDidReceiveNotificationResponse: (notificationResponse) {
-      // Hier kannst du auf Tap reagieren (z.B. Navigation)
-      final payload = notificationResponse.payload;
-      if (payload != null) {
-        print('Notification tapped, transactionId: $payload');
-      }
-    },
-  );
-  // 5) Background-Nachrichten hören
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+class NotificationService {
+  static final NotificationService _instance = NotificationService._internal();
+  factory NotificationService() => _instance;
+  NotificationService._internal();
 
-  // 6) Foreground-Presentation (iOS)
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
+  final StreamController<NotificationSettings> _settingsStreamController =
+      StreamController<NotificationSettings>.broadcast();
+  Stream<NotificationSettings> get settingsStream =>
+      _settingsStreamController.stream;
+
+  Future<void> initialize() async {
+    _firebaseMessaging.onTokenRefresh.listen(_saveToken);
+    await _checkInitialPermission();
+    _setupMessageListeners();
+  }
+
+  Future<AuthorizationStatus> requestPermission() async {
+
+    NotificationSettings currentSettings =
+        await _firebaseMessaging.getNotificationSettings();
+    if (currentSettings.authorizationStatus == AuthorizationStatus.authorized) {
+      return currentSettings.authorizationStatus;
+    }
+
+    NotificationSettings settings = await _firebaseMessaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    _settingsStreamController.add(settings);
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      await _getTokenAndSave();
+    }
+
+    return settings.authorizationStatus;
+  }
+
+  Future<void> checkPermissionOnAppResume() async {
+    NotificationSettings settings = await _firebaseMessaging
+        .getNotificationSettings();
+    _settingsStreamController.add(settings);
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      await _getTokenAndSave();
+    } else {
+      await _deleteToken();
+    }
+  }
+
+  Future<void> _checkInitialPermission() async {
+    NotificationSettings settings = await _firebaseMessaging
+        .getNotificationSettings();
+    _settingsStreamController.add(settings);
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      await _getTokenAndSave();
+    }
+  }
+
+  Future<void> _getTokenAndSave() async {
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      await _firebaseMessaging.getAPNSToken();
+    }
+    String? token = await _firebaseMessaging.getToken();
+    if (token != null) {
+      _saveToken(token);
+    }
+  }
+
+  Future<void> _saveToken(String token) async {
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+        throw Exception('no user is logged in');
+      }
+      await locator<UserRepositoryImpl>().saveNotificationToken(
+        currentUser.uid,
+        token,
+      );
+    } on FirebaseException catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> _deleteToken() async {
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser == null) {
+        throw Exception('no user is logged in');
+      }
+      await locator<UserRepositoryImpl>().deleteNotificationTokenFromCurrentLoggedInUser(
+        currentUser.uid,
+      );
+    } on FirebaseException catch (e) {
+      print(e);
+    }
+  }
+
+  void _setupMessageListeners() {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      if (message.notification != null) {
+        print(
+          'Nachricht enthielt auch eine Benachrichtigung: ${message.notification}',
+        );
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('Nachricht hat die App geöffnet: ${message.data}');
+    });
+  }
+
+  void dispose() {
+    _settingsStreamController.close();
+  }
 }
 
 Future<bool> ensureCameraPermission() async {
@@ -62,84 +154,4 @@ Future<bool> ensureCameraPermission() async {
     return true;
   }
   return false;
-}
-
-bool _isRequestingPermission = false;
-
-Future<void> requestPermissionAndSaveToken(User currentUser) async {
-  if (_isRequestingPermission) return;
-  _isRequestingPermission = true;
-
-  try {
-    final permission = Permission.notification;
-
-    if (await permission.isDenied || await permission.isPermanentlyDenied) {
-      PermissionStatus status = await permission.request();
-      if (!status.isGranted) {
-        return;
-      }
-    }
-
-    NotificationSettings settings = await FirebaseMessaging.instance
-        .getNotificationSettings();
-
-    if (settings.authorizationStatus == AuthorizationStatus.notDetermined) {
-      NotificationSettings newSettings = await FirebaseMessaging.instance
-          .requestPermission(
-            alert: true,
-            badge: true,
-            sound: true,
-          );
-
-      if (newSettings.authorizationStatus != AuthorizationStatus.authorized) {
-        print('User declined or has not accepted permission');
-        return;
-      }
-    }
-
-    if (settings.authorizationStatus == AuthorizationStatus.authorized ||
-        settings.authorizationStatus == AuthorizationStatus.provisional) {
-      String? token = await FirebaseMessaging.instance.getToken();
-      if (token != null) {
-        print('FCM Token: $token');
-        locator<UserRepositoryImpl>().saveNotificationToken(
-          currentUser.id,
-          token,
-        );
-      }
-    }
-  } catch (e) {
-    print('Error during permission/token request: $e');
-  } finally {
-    _isRequestingPermission = false;
-  }
-}
-
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
-
-// 2) Background-Handler
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  showLocalNotification(message);
-}
-
-// 3) Lokale Anzeige-Funktion
-void showLocalNotification(RemoteMessage message) async {
-  const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
-    'transaction_channel', // Kanal-ID
-    'Transactions', // Kanal-Name
-    importance: Importance.max,
-    priority: Priority.high,
-  );
-  const NotificationDetails platformDetails = NotificationDetails(
-    android: androidDetails,
-  );
-  await flutterLocalNotificationsPlugin.show(
-    message.notification.hashCode, // eindeutige ID
-    message.notification?.title, // Titel
-    message.notification?.body, // Text
-    platformDetails,
-    payload: message.data['transactionId'],
-  );
 }
