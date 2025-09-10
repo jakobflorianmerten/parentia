@@ -64,6 +64,12 @@ void showTransactionWoltModalSheet(
         ),
       ];
     },
+    modalTypeBuilder: (context) {
+      return const WoltBottomSheetType(
+        closeProgressThreshold: 0.8,
+        dismissDirection: WoltModalDismissDirection.down,
+      );
+    },
   );
 }
 
@@ -103,6 +109,8 @@ void showProfileModalBottomSheet(BuildContext context) {
   WoltModalSheet.show<void>(
     context: context,
     useRootNavigator: true,
+    enableDrag: true,
+    barrierDismissible: true,
     pageListBuilder: (modalSheetContext) {
       return [
         WoltModalSheetPage(
@@ -117,7 +125,8 @@ void showProfileModalBottomSheet(BuildContext context) {
     },
     modalTypeBuilder: (context) {
       return const WoltBottomSheetType(
-        closeProgressThreshold: 0.2, 
+        closeProgressThreshold: 0.8,
+        dismissDirection: WoltModalDismissDirection.down,
       );
     },
   );
@@ -143,6 +152,12 @@ void showTransactionModalBottomSheet(
         ),
       ];
     },
+    modalTypeBuilder: (context) {
+      return const WoltBottomSheetType(
+        closeProgressThreshold: 0.8,
+        dismissDirection: WoltModalDismissDirection.down,
+      );
+    },
   );
 }
 
@@ -161,7 +176,8 @@ void showQrCodeModalBottomSheet(BuildContext context) {
     },
     modalTypeBuilder: (context) {
       return const WoltBottomSheetType(
-        closeProgressThreshold: 0.2, 
+        closeProgressThreshold: 0.8,
+        dismissDirection: WoltModalDismissDirection.down,
       );
     },
   );

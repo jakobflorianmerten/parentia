@@ -32,10 +32,10 @@ class CustomizedAppBar extends StatelessWidget {
                   icon: Icon(Icons.center_focus_strong, size: 25),
                   onPressed: () async {
                     // first ask for permission to use the camera
-                    bool hasPermission = await ensureCameraPermission();
-                    if (hasPermission == false) {
-                      return;
-                    };
+                    // bool hasPermission = await ensureCameraPermission();
+                    // if (hasPermission == false) {
+                    //   return;
+                    // };
 
                     final result = await Navigator.of(context).push(
                       MaterialPageRoute(

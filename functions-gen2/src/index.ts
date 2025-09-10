@@ -124,7 +124,7 @@ export const sendTransactionResponseNotification = onDocumentUpdated(
         .get();
       if (!userSnap.exists) return null;
 
-      const messageTitle = "";
+      let messageTitle = "";
       let messageBody = "";
 
       // Insert Message entry in "notifications" collection
@@ -153,11 +153,13 @@ export const sendTransactionResponseNotification = onDocumentUpdated(
       const token = userSnap.data()?.fcmToken;
       if (!token) return null;
 
-      if (data.status === "accepted") {
+      if (data.status === "active") {
+        messageTitle = 'Transaktion akzeptiert';
         messageBody = `Deine Transaction von ${
           data.debtorName
         } über ${data.amount.toFixed(2).replace(".", ",")}€ wurde akzeptiert.`;
       } else if (data.status === "rejected") {
+        messageTitle = 'Transaktion abgelehnt';
         messageBody = `Deine Transaction von ${
           data.debtorName
         } über ${data.amount.toFixed(2).replace(".", ",")}€ wurde abgelehnt.`;
