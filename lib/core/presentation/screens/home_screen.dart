@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:parentia/core/blocs/qr_code_user_bloc/qr_code_user_bloc.dart';
 import 'package:parentia/core/get_it.dart';
 import 'package:parentia/core/presentation/animation/custom_loading_animation_element.dart';
 import 'package:parentia/core/presentation/widgets/flutter_helper_methods.dart';
@@ -17,6 +18,11 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    if (transactionPartnerUid != null && transactionPartnerUid != '') {
+      BlocProvider.of<QrCodeUserBloc>(context).add(QrCodeUserEvent.loadUser(transactionPartnerUid!));
+    }
+
     return BlocProvider(
       create: (context) =>
           locator<LoadTransactionsBloc>()
