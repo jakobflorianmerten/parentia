@@ -218,8 +218,8 @@ class UserRepositoryImpl implements UserRepository {
               : '',
         ),
       );
-    } catch (_) {
-      return left(UserFailures.serverError());
+    } catch (e) {
+      return left(UserFailures.errorWithMessage(e.toString()));
     }
   }
 

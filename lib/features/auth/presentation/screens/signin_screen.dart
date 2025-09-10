@@ -6,6 +6,7 @@ import 'package:parentia/core/presentation/widgets/custom_button.dart';
 import 'package:parentia/core/presentation/widgets/custom_clicked_element.dart';
 import 'package:parentia/core/presentation/widgets/flutter_helper_methods.dart';
 import 'package:parentia/core/presentation/widgets/loading_animation.dart';
+import 'package:parentia/core/push_notifications_helpers.dart';
 import 'package:parentia/custom_toastmessages/message_service.dart';
 import 'package:parentia/custom_toastmessages/overlay_widget.dart';
 import 'package:parentia/features/auth/application/signin/signin_bloc.dart';
@@ -23,21 +24,16 @@ class SigninScreen extends StatelessWidget {
         state.authFailureOrSuccessOption.fold(() {}, (either) {
           either.fold(
             (failure) {
-              String errMessage = 'Es ist etwas schief gelaufen';
-              if (failure is InvalidEmailAndPasswordCombination) {
-                errMessage =
-                    'Die E-Mail Adresse und das Passwort stimmen nicht überein';
-              }
               MessageService.show(
                 context,
                 title: AppLocalizations.of(context)!.error_signinInvalidEmailAndPasswordTitle,
                 message: AppLocalizations.of(context)!.error_signinInvalidEmailAndPasswordDescription,
                 type: MessageType.error,
               );
-              //showToastErrorMessage(title: 'Fehler', message: errMessage);
             },
             (_) {
               GoRouter.of(context).go('/home');
+             NotificationService().onLoginOrRegister();
             },
           );
         });

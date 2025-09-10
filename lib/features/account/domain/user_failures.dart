@@ -9,5 +9,6 @@ abstract class UserFailures with _$UserFailures{
   const factory UserFailures.userAlreadyExists() = UserAlreadyExists;
   const factory UserFailures.usernameAlreadyExists() = UsernameAlreadyExists;
   const factory UserFailures.userNotFound() = UserNotFound;
+  const factory UserFailures.errorWithMessage(String m) = ErrorWithMessage;
 
 }

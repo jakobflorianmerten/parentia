@@ -25,13 +25,20 @@ class NotificationService {
   Future<void> initialize() async {
     _firebaseMessaging.onTokenRefresh.listen(_saveToken);
     await _checkInitialPermission();
-    _setupMessageListeners();
+  }
+
+  Future<void> onLoginOrRegister() async {
+    NotificationSettings currentSettings = await _firebaseMessaging
+        .getNotificationSettings();
+    if (currentSettings.authorizationStatus == AuthorizationStatus.authorized) {
+      // check if there is an fcm token for the current user
+      await _getTokenAndSave();
+    }
   }
 
   Future<AuthorizationStatus> requestPermission() async {
-
-    NotificationSettings currentSettings =
-        await _firebaseMessaging.getNotificationSettings();
+    NotificationSettings currentSettings = await _firebaseMessaging
+        .getNotificationSettings();
     if (currentSettings.authorizationStatus == AuthorizationStatus.authorized) {
       return currentSettings.authorizationStatus;
     }
@@ -89,7 +96,7 @@ class NotificationService {
     try {
       final currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser == null) {
-        throw Exception('no user is logged in');
+        return;
       }
       await locator<UserRepositoryImpl>().saveNotificationToken(
         currentUser.uid,
@@ -104,28 +111,15 @@ class NotificationService {
     try {
       final currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser == null) {
-        throw Exception('no user is logged in');
+        return;
       }
-      await locator<UserRepositoryImpl>().deleteNotificationTokenFromCurrentLoggedInUser(
-        currentUser.uid,
-      );
+      await locator<UserRepositoryImpl>()
+          .deleteNotificationTokenFromCurrentLoggedInUser(
+            currentUser.uid,
+          );
     } on FirebaseException catch (e) {
       print(e);
     }
-  }
-
-  void _setupMessageListeners() {
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      if (message.notification != null) {
-        print(
-          'Nachricht enthielt auch eine Benachrichtigung: ${message.notification}',
-        );
-      }
-    });
-
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('Nachricht hat die App geöffnet: ${message.data}');
-    });
   }
 
   void dispose() {

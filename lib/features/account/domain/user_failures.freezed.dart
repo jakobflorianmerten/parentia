@@ -55,14 +55,15 @@ extension UserFailuresPatterns on UserFailures {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ServerError value)?  serverError,TResult Function( UserAlreadyExists value)?  userAlreadyExists,TResult Function( UsernameAlreadyExists value)?  usernameAlreadyExists,TResult Function( UserNotFound value)?  userNotFound,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ServerError value)?  serverError,TResult Function( UserAlreadyExists value)?  userAlreadyExists,TResult Function( UsernameAlreadyExists value)?  usernameAlreadyExists,TResult Function( UserNotFound value)?  userNotFound,TResult Function( ErrorWithMessage value)?  errorWithMessage,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case ServerError() when serverError != null:
 return serverError(_that);case UserAlreadyExists() when userAlreadyExists != null:
 return userAlreadyExists(_that);case UsernameAlreadyExists() when usernameAlreadyExists != null:
 return usernameAlreadyExists(_that);case UserNotFound() when userNotFound != null:
-return userNotFound(_that);case _:
+return userNotFound(_that);case ErrorWithMessage() when errorWithMessage != null:
+return errorWithMessage(_that);case _:
   return orElse();
 
 }
@@ -80,14 +81,15 @@ return userNotFound(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ServerError value)  serverError,required TResult Function( UserAlreadyExists value)  userAlreadyExists,required TResult Function( UsernameAlreadyExists value)  usernameAlreadyExists,required TResult Function( UserNotFound value)  userNotFound,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ServerError value)  serverError,required TResult Function( UserAlreadyExists value)  userAlreadyExists,required TResult Function( UsernameAlreadyExists value)  usernameAlreadyExists,required TResult Function( UserNotFound value)  userNotFound,required TResult Function( ErrorWithMessage value)  errorWithMessage,}){
 final _that = this;
 switch (_that) {
 case ServerError():
 return serverError(_that);case UserAlreadyExists():
 return userAlreadyExists(_that);case UsernameAlreadyExists():
 return usernameAlreadyExists(_that);case UserNotFound():
-return userNotFound(_that);case _:
+return userNotFound(_that);case ErrorWithMessage():
+return errorWithMessage(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -104,14 +106,15 @@ return userNotFound(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ServerError value)?  serverError,TResult? Function( UserAlreadyExists value)?  userAlreadyExists,TResult? Function( UsernameAlreadyExists value)?  usernameAlreadyExists,TResult? Function( UserNotFound value)?  userNotFound,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ServerError value)?  serverError,TResult? Function( UserAlreadyExists value)?  userAlreadyExists,TResult? Function( UsernameAlreadyExists value)?  usernameAlreadyExists,TResult? Function( UserNotFound value)?  userNotFound,TResult? Function( ErrorWithMessage value)?  errorWithMessage,}){
 final _that = this;
 switch (_that) {
 case ServerError() when serverError != null:
 return serverError(_that);case UserAlreadyExists() when userAlreadyExists != null:
 return userAlreadyExists(_that);case UsernameAlreadyExists() when usernameAlreadyExists != null:
 return usernameAlreadyExists(_that);case UserNotFound() when userNotFound != null:
-return userNotFound(_that);case _:
+return userNotFound(_that);case ErrorWithMessage() when errorWithMessage != null:
+return errorWithMessage(_that);case _:
   return null;
 
 }
@@ -128,13 +131,14 @@ return userNotFound(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  serverError,TResult Function()?  userAlreadyExists,TResult Function()?  usernameAlreadyExists,TResult Function()?  userNotFound,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  serverError,TResult Function()?  userAlreadyExists,TResult Function()?  usernameAlreadyExists,TResult Function()?  userNotFound,TResult Function( String m)?  errorWithMessage,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case ServerError() when serverError != null:
 return serverError();case UserAlreadyExists() when userAlreadyExists != null:
 return userAlreadyExists();case UsernameAlreadyExists() when usernameAlreadyExists != null:
 return usernameAlreadyExists();case UserNotFound() when userNotFound != null:
-return userNotFound();case _:
+return userNotFound();case ErrorWithMessage() when errorWithMessage != null:
+return errorWithMessage(_that.m);case _:
   return orElse();
 
 }
@@ -152,13 +156,14 @@ return userNotFound();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  serverError,required TResult Function()  userAlreadyExists,required TResult Function()  usernameAlreadyExists,required TResult Function()  userNotFound,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  serverError,required TResult Function()  userAlreadyExists,required TResult Function()  usernameAlreadyExists,required TResult Function()  userNotFound,required TResult Function( String m)  errorWithMessage,}) {final _that = this;
 switch (_that) {
 case ServerError():
 return serverError();case UserAlreadyExists():
 return userAlreadyExists();case UsernameAlreadyExists():
 return usernameAlreadyExists();case UserNotFound():
-return userNotFound();case _:
+return userNotFound();case ErrorWithMessage():
+return errorWithMessage(_that.m);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -175,13 +180,14 @@ return userNotFound();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  serverError,TResult? Function()?  userAlreadyExists,TResult? Function()?  usernameAlreadyExists,TResult? Function()?  userNotFound,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  serverError,TResult? Function()?  userAlreadyExists,TResult? Function()?  usernameAlreadyExists,TResult? Function()?  userNotFound,TResult? Function( String m)?  errorWithMessage,}) {final _that = this;
 switch (_that) {
 case ServerError() when serverError != null:
 return serverError();case UserAlreadyExists() when userAlreadyExists != null:
 return userAlreadyExists();case UsernameAlreadyExists() when usernameAlreadyExists != null:
 return usernameAlreadyExists();case UserNotFound() when userNotFound != null:
-return userNotFound();case _:
+return userNotFound();case ErrorWithMessage() when errorWithMessage != null:
+return errorWithMessage(_that.m);case _:
   return null;
 
 }
@@ -316,5 +322,71 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class ErrorWithMessage implements UserFailures {
+  const ErrorWithMessage(this.m);
+  
+
+ final  String m;
+
+/// Create a copy of UserFailures
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ErrorWithMessageCopyWith<ErrorWithMessage> get copyWith => _$ErrorWithMessageCopyWithImpl<ErrorWithMessage>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ErrorWithMessage&&(identical(other.m, m) || other.m == m));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,m);
+
+@override
+String toString() {
+  return 'UserFailures.errorWithMessage(m: $m)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ErrorWithMessageCopyWith<$Res> implements $UserFailuresCopyWith<$Res> {
+  factory $ErrorWithMessageCopyWith(ErrorWithMessage value, $Res Function(ErrorWithMessage) _then) = _$ErrorWithMessageCopyWithImpl;
+@useResult
+$Res call({
+ String m
+});
+
+
+
+
+}
+/// @nodoc
+class _$ErrorWithMessageCopyWithImpl<$Res>
+    implements $ErrorWithMessageCopyWith<$Res> {
+  _$ErrorWithMessageCopyWithImpl(this._self, this._then);
+
+  final ErrorWithMessage _self;
+  final $Res Function(ErrorWithMessage) _then;
+
+/// Create a copy of UserFailures
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? m = null,}) {
+  return _then(ErrorWithMessage(
+null == m ? _self.m : m // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
 
 // dart format on

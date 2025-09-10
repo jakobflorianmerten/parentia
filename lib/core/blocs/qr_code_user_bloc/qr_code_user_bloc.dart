@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:parentia/features/account/domain/entities/user.dart';
 import 'package:parentia/features/account/domain/repositories/user_repository.dart';
+import 'package:parentia/features/account/domain/user_failures.dart';
 
 part 'qr_code_user_event.dart';
 part 'qr_code_user_state.dart';
@@ -15,7 +16,7 @@ class QrCodeUserBloc extends Bloc<QrCodeUserEvent, QrCodeUserState> {
       emit(QrCodeUserState.loading());
       final result = await _userRepo.loadUserById(event.userId);
       result.fold((failure) {
-        emit(QrCodeUserState.error("Es ist ein Fehler beim Laden des Nutzers aufgetreten."));
+        emit(QrCodeUserState.error((failure as ErrorWithMessage).m));
       }, (user) {
         emit(QrCodeUserState.success(user));
       });

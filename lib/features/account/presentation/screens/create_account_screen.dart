@@ -6,6 +6,7 @@ import 'package:parentia/core/presentation/widgets/custom_button.dart';
 import 'package:parentia/core/presentation/widgets/flutter_helper_methods.dart';
 import 'package:parentia/core/presentation/widgets/image_picker.dart';
 import 'package:parentia/core/presentation/widgets/loading_animation.dart';
+import 'package:parentia/core/push_notifications_helpers.dart';
 import 'package:parentia/custom_toastmessages/message_service.dart';
 import 'package:parentia/custom_toastmessages/overlay_widget.dart';
 import 'package:parentia/features/account/application/blocs/create_user/create_user_bloc.dart';
@@ -46,6 +47,7 @@ class CreateAccountScreen extends StatelessWidget {
                 },
                 (success) {
                   GoRouter.of(context).go('/home');
+                  NotificationService().onLoginOrRegister();
                 },
               );
             });

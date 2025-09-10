@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:parentia/core/get_it.dart';
@@ -14,7 +12,8 @@ import 'package:parentia/features/transaction/presentation/widgets/current_trans
 import 'package:parentia/l10n/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final String? transactionPartnerUid;
+  const HomeScreen({super.key, this.transactionPartnerUid});
 
   @override
   Widget build(BuildContext context) {

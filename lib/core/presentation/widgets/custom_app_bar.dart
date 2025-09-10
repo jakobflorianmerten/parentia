@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:parentia/core/blocs/qr_code_user_bloc/qr_code_user_bloc.dart';
 import 'package:parentia/core/presentation/animation/custom_drawer.dart';
 import 'package:parentia/core/presentation/screens/qr_code_scanner.dart';
@@ -31,25 +32,7 @@ class CustomizedAppBar extends StatelessWidget {
                 CustomIconButton(
                   icon: Icon(Icons.center_focus_strong, size: 25),
                   onPressed: () async {
-                    // first ask for permission to use the camera
-                    // bool hasPermission = await ensureCameraPermission();
-                    // if (hasPermission == false) {
-                    //   return;
-                    // };
-
-                    final result = await Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return QrCodeScannerScreen();
-                        },
-                      ),
-                    );
-
-                    if (result != null && result is String) {
-                      BlocProvider.of<QrCodeUserBloc>(
-                        context,
-                      ).add(QrCodeUserEvent.loadUser(result.toString()));
-                    }
+                    GoRouter.of(context).go('/qr-code-scanner');
                   },
                 ),
                 addHorizontalSpace(10),

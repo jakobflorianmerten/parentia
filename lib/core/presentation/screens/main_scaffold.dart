@@ -5,8 +5,11 @@ import 'package:parentia/core/blocs/qr_code_user_bloc/qr_code_user_bloc.dart';
 import 'package:parentia/core/get_it.dart';
 import 'package:parentia/core/presentation/animation/custom_drawer.dart';
 import 'package:parentia/core/presentation/animation/custom_loading_animation_element.dart';
+import 'package:parentia/core/presentation/screens/qr_code_scanner.dart';
 import 'package:parentia/core/presentation/widgets/bottom_navigation_bar.dart';
 import 'package:parentia/core/push_notifications_helpers.dart';
+import 'package:parentia/custom_toastmessages/message_service.dart';
+import 'package:parentia/custom_toastmessages/overlay_widget.dart';
 import 'package:parentia/features/account/application/blocs/current_user/current_user_bloc.dart';
 import 'package:parentia/features/account/application/blocs/load_notifications/load_notifications_bloc.dart';
 import 'package:parentia/features/notification/presentation/screens/notifications_screen.dart';
@@ -89,6 +92,9 @@ class _MainNavigationScaffoldState extends State<MainNavigationScaffold>
                               context,
                               user: state.user,
                             );
+                          }
+                          if (state is QrCodeUserStateError) {
+                            MessageService.show(context, title: 'Error loading user', message: state.errorMessage, type: MessageType.error);
                           }
                         },
                         builder: (context, state) {

@@ -5,6 +5,7 @@ import 'package:parentia/core/get_it.dart';
 import 'package:parentia/core/presentation/screens/home_screen.dart';
 import 'package:parentia/core/presentation/screens/main_scaffold.dart';
 import 'package:parentia/core/presentation/screens/more_screen.dart';
+import 'package:parentia/core/presentation/screens/qr_code_scanner.dart';
 import 'package:parentia/core/presentation/screens/splash_screen.dart';
 import 'package:parentia/features/account/presentation/screens/account_screen.dart';
 import 'package:parentia/features/account/presentation/screens/create_account_screen.dart';
@@ -51,6 +52,10 @@ final router_config = GoRouter(
       ),
     ),
     GoRoute(
+      path: '/qr-code-scanner',
+      builder: (context, state) => QrCodeScannerScreen(),
+    ),
+    GoRoute(
       path: '/signup',
       builder: (context, state) => BlocProvider(
         create: (context) => locator<RegisterBloc>(),
@@ -72,9 +77,10 @@ final router_config = GoRouter(
         GoRoute(
           path: '/home',
           pageBuilder: (context, state) {
+            final code = state.uri.queryParameters['code'];
             return NoTransitionPage(
               key: state.pageKey,
-              child: HomeScreen(),
+              child: HomeScreen(transactionPartnerUid: code),
             );
           },
         ),

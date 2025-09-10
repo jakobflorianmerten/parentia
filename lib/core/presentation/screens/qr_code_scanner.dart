@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:parentia/core/presentation/widgets/custom_icon_button.dart';
+import 'package:parentia/custom_toastmessages/message_service.dart';
+import 'package:parentia/custom_toastmessages/overlay_widget.dart';
 
 class QrCodeScannerScreen extends StatefulWidget {
   const QrCodeScannerScreen({super.key});
@@ -30,7 +33,8 @@ class _QrCodeScannerScreenState extends State<QrCodeScannerScreen> {
             onDetect: (BarcodeCapture capture) {
               final String? code = capture.barcodes.first.rawValue;
               if (code != null) {
-                Navigator.of(context).pop(code);
+                MessageService.show(context, title: 'Success', message: 'Code: ' + code.toString(), type: MessageType.success);
+                GoRouter.of(context).go('/home?qr_code=' + code.toString());
               }
             },
           ),
@@ -41,7 +45,7 @@ class _QrCodeScannerScreenState extends State<QrCodeScannerScreen> {
               child: CustomIconButton(
                 icon: Icon(Icons.close_rounded, color: Colors.white, size: 20),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  GoRouter.of(context).go('/home');
                 },
               ),
             ),

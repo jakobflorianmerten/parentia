@@ -19,11 +19,11 @@ void main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await NotificationService().initialize();
   //FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
   setup();
   await dotenv.load(fileName: ".env");
+  await NotificationService().initialize();
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,
