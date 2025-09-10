@@ -9,6 +9,7 @@ import 'package:parentia/features/account/application/blocs/load_notifications/l
 import 'package:parentia/features/account/presentation/widgets/app_bar_qr_code_element.dart';
 import 'package:parentia/core/presentation/widgets/custom_icon_button.dart';
 import 'package:parentia/core/presentation/widgets/flutter_helper_methods.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CustomizedAppBar extends StatelessWidget {
   const CustomizedAppBar({super.key});
@@ -32,7 +33,9 @@ class CustomizedAppBar extends StatelessWidget {
                   onPressed: () async {
                     // first ask for permission to use the camera
                     bool hasPermission = await ensureCameraPermission();
-                    if (hasPermission == false) return;
+                    if (hasPermission == false) {
+                      return;
+                    };
 
                     final result = await Navigator.of(context).push(
                       MaterialPageRoute(

@@ -42,22 +42,25 @@ Future<void> setupPushNotifications() async {
 }
 
 Future<bool> ensureCameraPermission() async {
-  final status = await Permission.camera.status;
+  var status = await Permission.camera.status;
 
   if (status.isGranted) {
+    print("Permission is already granted.");
     return true;
   }
 
-  if (status.isDenied || status.isLimited) {
-    final result = await Permission.camera.request();
-    return result.isGranted;
-  }
-
-  // Bei permanentlyDenied z. B. den Nutzer zu den App-Einstellungen leiten
   if (status.isPermanentlyDenied) {
+    print("Permission is permanently denied. Opening app settings.");
     await openAppSettings();
+    return false;
   }
 
+  status = await Permission.camera.request();
+
+  if (status.isGranted) {
+    print("Permission was granted.");
+    return true;
+  }
   return false;
 }
 

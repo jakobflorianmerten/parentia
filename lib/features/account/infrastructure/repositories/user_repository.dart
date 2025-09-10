@@ -121,18 +121,12 @@ class UserRepositoryImpl implements UserRepository {
           .timeout(Duration(seconds: 10));
       return right(unit);
     } on TimeoutException {
-      print('▶︎ Firestore write timed out');
       return left(UserFailures.serverError());
-    } on FirebaseException catch (e, stack) {
-      print('FirebaseException: ${e.code} - ${e.message}');
-      print('Stacktrace: $stack');
+    } on FirebaseException catch (e, _) {
       return left(UserFailures.serverError());
-    } on PlatformException catch (e) {
-      print(e);
+    } on PlatformException catch (_) {
       return left(UserFailures.serverError());
-    } catch (e, stack) {
-      print('Exception: $e');
-      print('Stacktrace: $stack');
+    } catch (e, _) {
       return left(UserFailures.serverError());
     }
   }

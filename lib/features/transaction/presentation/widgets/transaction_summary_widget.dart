@@ -45,7 +45,6 @@ class TransactionSummaryWidget extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          print(state.selectedUser.isSome());
           String selectedUserName = state.selectedUser
               .getOrElse(() => throw Error())
               .fullName;

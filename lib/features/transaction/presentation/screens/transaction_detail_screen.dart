@@ -79,54 +79,52 @@ class TransactionDetailScreen extends StatelessWidget {
                         ),
                       )
                     : Container(),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        InformationWidgetWithChild(
-                          label: AppLocalizations.of(context)!.debtor,
-                          child: UserWidget(
-                            profilePicture: transaction.debtorProfilePicture,
-                            name: transaction.isCreditor == false
-                                ? transaction.debtorName + ' (Du)'
-                                : transaction.debtorName,
-                          ),
+                SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      InformationWidgetWithChild(
+                        label: AppLocalizations.of(context)!.debtor,
+                        child: UserWidget(
+                          profilePicture: transaction.debtorProfilePicture,
+                          name: transaction.isCreditor == false
+                              ? transaction.debtorName + ' (Du)'
+                              : transaction.debtorName,
                         ),
-                        addVerticalSpace(40),
-                        InformationWidgetWithChild(
-                          label: AppLocalizations.of(context)!.creditor,
-                          child: UserWidget(
-                            profilePicture:
-                                transaction.creditorProfilePicture,
-                            name: transaction.isCreditor == true
-                                ? transaction.creditorName + ' (Du)'
-                                : transaction.creditorName,
-                          ),
+                      ),
+                      addVerticalSpace(40),
+                      InformationWidgetWithChild(
+                        label: AppLocalizations.of(context)!.creditor,
+                        child: UserWidget(
+                          profilePicture:
+                              transaction.creditorProfilePicture,
+                          name: transaction.isCreditor == true
+                              ? transaction.creditorName + ' (Du)'
+                              : transaction.creditorName,
                         ),
-                        addVerticalSpace(40),
-                        InformationWidgetWithChild(
-                          label: AppLocalizations.of(
-                            context,
-                          )!.amount_in_euros,
-                          child: Text(
-                            euroFormat.format(
-                              transaction.amount.getOrCrash(),
-                            ),
-                            style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      addVerticalSpace(40),
+                      InformationWidgetWithChild(
+                        label: AppLocalizations.of(
+                          context,
+                        )!.amount_in_euros,
+                        child: Text(
+                          euroFormat.format(
+                            transaction.amount.getOrCrash(),
                           ),
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
-                        addVerticalSpace(40),
-                        InformationWidgetWithChild(
-                          label: AppLocalizations.of(context)!.paymentDate,
-                          child: Text(
-                            formattedDate,
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
+                      ),
+                      addVerticalSpace(40),
+                      InformationWidgetWithChild(
+                        label: AppLocalizations.of(context)!.paymentDate,
+                        child: Text(
+                          formattedDate,
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
-                        addVerticalSpace(30)
-                      ],
-                    ),
+                      ),
+                      addVerticalSpace(30)
+                    ],
                   ),
                 ),
               ],

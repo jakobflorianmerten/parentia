@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomBackButton extends StatefulWidget {
@@ -38,7 +39,7 @@ class _CustomBackButtonState extends State<CustomBackButton>
       },
       onTapUp: (_) {
         _controller.reverse();
-
+        HapticFeedback.mediumImpact();
         if (widget.navigatorKey != null) {
           widget.navigatorKey!.currentState?.maybePop();
         } else {

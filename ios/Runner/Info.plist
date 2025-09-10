@@ -31,7 +31,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Diese App benötigt Kamerazugriff zum Scannen von QR-Codes</string>
+    <string>This app needs camera access to scan QR codes for event check-in.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Wir möchten ein Bild aus Ihrer Galerie auswählen.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

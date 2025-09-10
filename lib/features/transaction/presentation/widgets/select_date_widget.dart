@@ -54,7 +54,6 @@ class _SelectDateWidgetState extends State<SelectDateWidget> {
               ),
               dayTextStyle: Theme.of(context).textTheme.bodyMedium!,
               onDateChange: (date) {
-                print(date);
                 setState(() {
                   _selectedValue = date;
                 });
