@@ -85,27 +85,7 @@ class _MainNavigationScaffoldState extends State<MainNavigationScaffold>
                 child: Scaffold(
                   body: Stack(
                     children: [
-                      BlocConsumer<QrCodeUserBloc, QrCodeUserState>(
-                        listener: (context, state) {
-                          if (state is QrCodeUserStateSuccess) {
-                            showTransactionWoltModalSheet(
-                              context,
-                              user: state.user,
-                            );
-                          }
-                          if (state is QrCodeUserStateError) {
-                            MessageService.show(context, title: 'Error loading user', message: state.errorMessage, type: MessageType.error);
-                          }
-                        },
-                        builder: (context, state) {
-                          if (state is QrCodeUserStateLoading) {
-                            return Center(
-                              child: CustomLoadingAnimationElement(),
-                            );
-                          }
-                          return widget.child;
-                        },
-                      ),
+                      widget.child,
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: CustomBottomNavigationBar(),

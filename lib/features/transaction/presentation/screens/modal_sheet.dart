@@ -33,7 +33,7 @@ void showTransactionWoltModalSheet(
 
   WoltModalSheet.show<void>(
     context: context,
-
+        useRootNavigator: true,
     pageIndexNotifier: modalSheetPageIndexNotifier,
     pageListBuilder: (modalSheetContext) {
       final textTheme = Theme.of(context).textTheme;

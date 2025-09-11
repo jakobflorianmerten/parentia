@@ -57,7 +57,6 @@ class LoadNotificationsBloc
       );
 
       result.fold((failure) {
-        // TODO: Error handling
       }, (_) {});
     });
   }

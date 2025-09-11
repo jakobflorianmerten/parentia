@@ -43,8 +43,8 @@ class ImplAuthRepository implements IAuthRepository {
         await user.sendEmailVerification();
       }
       return right(unit);
-    } on PlatformException catch (e) {
-      if (e.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
+    } on FirebaseException catch (e) {
+      if (e.code == 'email-already-in-use') {
         return left(const AuthFailure.emailAlreadyInUse());
       } else {
         return left(const AuthFailure.serverError());
