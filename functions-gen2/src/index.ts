@@ -43,6 +43,8 @@ export const sendTransactionNotification = onDocumentCreated(
     let userLanguage = DEFAULT_LANGUAGE;
     userLanguage = userSnap.data()?.languageCode || DEFAULT_LANGUAGE;
 
+    console.log("UserLanguage: " + userLanguage.toString());
+
     const dataAmount: string = data.amount.toFixed(2).replace(".", ",");
 
     // fetch the notification title and body from firestore
@@ -167,7 +169,7 @@ export const sendTransactionResponseNotification = onDocumentUpdated(
       const txId = event.params.txId;
       const userSnap = await getFirestore()
         .collection("users")
-        .doc(data.debtorId)
+        .doc(data.creditorId)
         .get();
       if (!userSnap.exists) return null;
 
