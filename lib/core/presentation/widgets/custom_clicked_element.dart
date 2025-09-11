@@ -50,10 +50,12 @@ class _CustomClickedElementState extends State<CustomClickedElement>
             },
       onTapUp: isInactive
           ? null
-          : (_) {
-              _controller.reverse();
+          : (_) async {
               HapticFeedback.mediumImpact();
-              widget.onPressed();
+              await _controller.reverse();
+              if (mounted) {
+                widget.onPressed();
+              }
             },
       onTapCancel: isInactive
           ? null

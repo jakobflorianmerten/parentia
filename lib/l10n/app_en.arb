@@ -53,6 +53,8 @@
   "error_createAccountUsernameAlreadyExistsDescription": "The username already exists and cannot be assigned more than once. Please change it.", 
   "error_signinInvalidEmailAndPasswordTitle": "Invalid password and email match", 
   "error_signinInvalidEmailAndPasswordDescription": "The provided email and password do not match.", 
+  "error_signinUserAlreadySignedInOnDifferentDeviceTitle": "The user is already logged in on another device.", 
+  "error_signinUserAlreadySignedInOnDifferentDeviceDescription": "The user is already logged in on another device. A user may only be logged in on one device.", 
   "error_signupEmailAlreadyInUseTitle": "Email already in use", 
   "error_signupEmailAlreadyInUseDescription": "The provided email is already attached to an account.", 
   "error_invalidEmailMessageTitle": "Invalid email address", 

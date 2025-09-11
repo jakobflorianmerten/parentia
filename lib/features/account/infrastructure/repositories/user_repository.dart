@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:parentia/core/algolia_config.dart';
+import 'package:parentia/core/push_notifications_helpers.dart';
 import 'package:parentia/features/account/domain/entities/notification.dart';
 import 'package:parentia/features/account/domain/entities/user.dart';
 import 'package:parentia/features/account/domain/repositories/user_repository.dart';
@@ -106,12 +107,16 @@ class UserRepositoryImpl implements UserRepository {
         profileImagePath = await uploadTask.ref.getDownloadURL();
       }
 
+      final String currentLangCode = getLanguageCode();
+
+
       // then save the user data to firestore
       final data = {
         'name': fullName,
         'username': username,
         'profileImage': profileImagePath,
         'email': email,
+        'languageCode': currentLangCode
       };
 
       await _firestore
@@ -130,6 +135,24 @@ class UserRepositoryImpl implements UserRepository {
       return left(UserFailures.serverError());
     }
   }
+
+  @override
+  Future<void> updateUserLanguagePreference(String languageCode) async {
+  final user = _auth.currentUser;
+  if (user == null) {
+    return;
+  }
+  final String userId = user.uid;
+  final DocumentReference userDocRef = FirebaseFirestore.instance.collection('users').doc(userId);
+  try {
+    await userDocRef.set({
+      'languageCode': languageCode, 
+    }, SetOptions(merge: true));
+    print("User language preference updated successfully to: $languageCode");
+  } catch (e) {
+    print("Error updating user language preference: $e");
+  }
+}
 
   @override
   Future<Either<UserFailures, Unit>> updateUser(

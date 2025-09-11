@@ -35,7 +35,7 @@ void setup() {
     () => ImplAuthRepository(FirebaseAuth.instance),
   );
   locator.registerFactory(() => RegisterBloc(locator<ImplAuthRepository>()));
-  locator.registerFactory(() => SigninBloc(locator<ImplAuthRepository>()));
+  locator.registerFactory(() => SigninBloc(locator<ImplAuthRepository>(), locator<UserRepositoryImpl>()));
   locator.registerFactory(() => ForgotPasswordBloc(locator<ImplAuthRepository>()));
 
   // User Kontext

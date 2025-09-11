@@ -181,6 +181,14 @@ class AppLocalizationsDe extends AppLocalizations {
       'Die angegebene E-Mail-Adresse und das Passwort stimmen nicht überein.';
 
   @override
+  String get error_signinUserAlreadySignedInOnDifferentDeviceTitle =>
+      'Der Nutzer ist bereits auf einem anderen Gerät eingeloggt.';
+
+  @override
+  String get error_signinUserAlreadySignedInOnDifferentDeviceDescription =>
+      'Der Nutzer ist bereits auf einem anderen Gerät eingeloggt. Ein Nutzer darf nur an einem Gerät eingeloggt sein.';
+
+  @override
   String get error_signupEmailAlreadyInUseTitle =>
       'E-Mail-Adresse bereits in Gebrauch';
 

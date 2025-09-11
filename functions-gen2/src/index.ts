@@ -7,9 +7,10 @@ import {
 import { getFirestore, FieldValue } from "firebase-admin/firestore";
 import { getMessaging } from "firebase-admin/messaging";
 
-
 setGlobalOptions({ maxInstances: 10 });
 admin.initializeApp();
+
+const DEFAULT_LANGUAGE = "en";
 
 // Cloud Funktion, sobald eine Transaktion erstellt wurde, wird eine Notification an den Debitor geschickt
 export const sendTransactionNotification = onDocumentCreated(
@@ -39,15 +40,61 @@ export const sendTransactionNotification = onDocumentCreated(
     const db = getFirestore();
     const userSnap = await db.collection("users").doc(data.debtorId).get();
     if (!userSnap.exists) return null;
+    let userLanguage = DEFAULT_LANGUAGE;
+    userLanguage = userSnap.data()?.languageCode || DEFAULT_LANGUAGE;
 
     const dataAmount: string = data.amount.toFixed(2).replace(".", ",");
+
+    // fetch the notification title and body from firestore
+    const notificationTemplateSnap = await db
+      .collection("notification_templates")
+      .doc("payment_request")
+      .get();
+    if (!notificationTemplateSnap.exists) {
+      console.warn("No notification template found, exiting.");
+      return null;
+    }
+    const notificationTemplate = notificationTemplateSnap.data();
+    if (!notificationTemplate) {
+      console.warn("No notification template data found, exiting.");
+      return null;
+    }
+
+    let templateForLang = notificationTemplate[userLanguage];
+    if (!templateForLang) {
+      console.warn(
+        `No template for language ${userLanguage}, falling back to default.`
+      );
+      // Optional: fallback auf DEFAULT_LANGUAGE
+      if (notificationTemplate[DEFAULT_LANGUAGE]) {
+        templateForLang = notificationTemplate[DEFAULT_LANGUAGE];
+      } else {
+        return null;
+      }
+    }
+
+    let notificationBody = templateForLang.body;
+    notificationBody = notificationBody
+      .replace("{name}", data.creditorName)
+      .replace("{amount}", dataAmount);
+
+    let notificationData = {
+      title: templateForLang.title,
+      body: notificationBody,
+    };
+
+    if (notificationData.title == null || notificationData.body == null) {
+      console.log("Notification title oder body ist null");
+      return;
+    }
+
     await db
       .collection("users")
       .doc(data.debtorId)
       .collection("notifications")
       .add({
-        title: `${data.creditorName} hat die eine Anfrage für eine Transaction geschickt`,
-        body: `Du hast eine neue Transaction von ${data.creditorName} über ${dataAmount}€ erhalten`,
+        title: notificationData.title,
+        body: notificationData.body,
         type: "transaction_request",
         read: false,
         transactionId: txId,
@@ -61,8 +108,8 @@ export const sendTransactionNotification = onDocumentCreated(
     const message = {
       token,
       notification: {
-        title: "Transaktionsanfrage",
-        body: `${data.creditorName} hat die eine Anfrage für eine Transaction geschickt`,
+        title: notificationData.title,
+        body: notificationData.body,
       },
     };
 
@@ -124,8 +171,53 @@ export const sendTransactionResponseNotification = onDocumentUpdated(
         .get();
       if (!userSnap.exists) return null;
 
-      let messageTitle = "";
-      let messageBody = "";
+      let userLanguage = DEFAULT_LANGUAGE;
+      userLanguage = userSnap.data()?.languageCode || DEFAULT_LANGUAGE;
+
+      const dataAmount: string = data.amount.toFixed(2).replace(".", ",");
+
+      let notificationKey =
+        data.status === "active"
+          ? "transaction_accepted"
+          : "transaction_rejected";
+
+      // fetch the notification title and body from firestore
+      const notificationTemplateSnap = await getFirestore()
+        .collection("notification_templates")
+        .doc(notificationKey)
+        .get();
+      if (!notificationTemplateSnap.exists) {
+        console.warn("No notification template found, exiting.");
+        return null;
+      }
+      const notificationTemplate = notificationTemplateSnap.data();
+      if (!notificationTemplate) {
+        console.warn("No notification template data found, exiting.");
+        return null;
+      }
+
+      let templateForLang = notificationTemplate[userLanguage];
+      if (!templateForLang) {
+        console.warn(
+          `No template for language ${userLanguage}, falling back to default.`
+        );
+        // Optional: fallback auf DEFAULT_LANGUAGE
+        if (notificationTemplate[DEFAULT_LANGUAGE]) {
+          templateForLang = notificationTemplate[DEFAULT_LANGUAGE];
+        } else {
+          return null;
+        }
+      }
+
+      let notificationBody = templateForLang.body;
+      notificationBody = notificationBody
+        .replace("{name}", data.debtorName)
+        .replace("{amount}", dataAmount);
+
+      let notificationData = {
+        title: templateForLang.title,
+        body: notificationBody,
+      };
 
       // Insert Message entry in "notifications" collection
       await getFirestore()
@@ -133,14 +225,8 @@ export const sendTransactionResponseNotification = onDocumentUpdated(
         .doc(data.creditorId)
         .collection("notifications")
         .add({
-          title: `Transaction von ${data.debtorName} wurde ${
-            data.status === "active" ? "akzeptiert" : "abgelehnt"
-          }`,
-          body: `Die Transaction von ${data.debtorName} über ${data.amount
-            .toFixed(2)
-            .replace(".", ",")}€ wurde ${
-            data.status === "active" ? "akzeptiert" : "abgelehnt"
-          }.`,
+          title: notificationData.title,
+          body: notificationData.body,
           type:
             data.status === "active"
               ? "transaction_accepted"
@@ -153,23 +239,11 @@ export const sendTransactionResponseNotification = onDocumentUpdated(
       const token = userSnap.data()?.fcmToken;
       if (!token) return null;
 
-      if (data.status === "active") {
-        messageTitle = 'Transaktion akzeptiert';
-        messageBody = `Deine Transaction von ${
-          data.debtorName
-        } über ${data.amount.toFixed(2).replace(".", ",")}€ wurde akzeptiert.`;
-      } else if (data.status === "rejected") {
-        messageTitle = 'Transaktion abgelehnt';
-        messageBody = `Deine Transaction von ${
-          data.debtorName
-        } über ${data.amount.toFixed(2).replace(".", ",")}€ wurde abgelehnt.`;
-      }
-
       const message = {
         token,
         notification: {
-          title: messageTitle,
-          body: messageBody,
+          title: notificationData.title,
+          body: notificationData.body,
         },
       };
       try {
@@ -214,8 +288,10 @@ export const notifyCreditorOnPayment = onDocumentCreated(
 
     if (!creditorSnap.exists) return null;
 
+    let creditorLanguage = DEFAULT_LANGUAGE;
+    creditorLanguage = creditorSnap.data()?.languageCode || DEFAULT_LANGUAGE;
+
     const creditor = creditorSnap.data();
-    const token = creditor?.fcmToken;
 
     // Benachrichtigungstext vorbereiten
     const amountPaid = transaction.amount;
@@ -223,8 +299,44 @@ export const notifyCreditorOnPayment = onDocumentCreated(
       ? `${amountPaid.toFixed(2).replace(".", ",")}€`
       : "ein Betrag";
 
-    const messageTitle = "Neue Zahlungsanfrage erhalten";
-    const messageBody = `Du hast eine Zahlung von ${transaction.debtorName} über ${formattedAmount} erhalten. Bitte reagiere auf die Zahlung, indem du sie ablehnst oder akzeptierst.`;
+    // fetch the notification title and body from firestore
+    const notificationTemplateSnap = await getFirestore()
+      .collection("notification_templates")
+      .doc("payment_request")
+      .get();
+    if (!notificationTemplateSnap.exists) {
+      console.warn("No notification template found, exiting.");
+      return null;
+    }
+    const notificationTemplate = notificationTemplateSnap.data();
+    if (!notificationTemplate) {
+      console.warn("No notification template data found, exiting.");
+      return null;
+    }
+
+    let templateForLang = notificationTemplate[creditorLanguage];
+    if (!templateForLang) {
+      console.warn(
+        `No template for language ${creditorLanguage}, falling back to default.`
+      );
+      // Optional: fallback auf DEFAULT_LANGUAGE
+      if (notificationTemplate[DEFAULT_LANGUAGE]) {
+        templateForLang = notificationTemplate[DEFAULT_LANGUAGE];
+      } else {
+        return null;
+      }
+    }
+
+    let notificationBody = templateForLang.body;
+    notificationBody = notificationBody
+      .replace("{name}", transaction.debtorName)
+      .replace("{amount}", formattedAmount);
+
+    let notificationData = {
+      title: templateForLang.title,
+      body: notificationBody,
+    };
+    const token = creditor?.fcmToken;
 
     // Notification-Dokument in Subcollection hinzufügen
     await getFirestore()
@@ -232,8 +344,8 @@ export const notifyCreditorOnPayment = onDocumentCreated(
       .doc(transaction.creditorId)
       .collection("notifications")
       .add({
-        title: messageTitle,
-        body: messageBody,
+        title: notificationData.title,
+        body: notificationData.body,
         type: "payment_request",
         read: false,
         createdAt: FieldValue.serverTimestamp(),
@@ -243,8 +355,8 @@ export const notifyCreditorOnPayment = onDocumentCreated(
       const message = {
         token,
         notification: {
-          title: messageTitle,
-          body: messageBody,
+          title: notificationData.title,
+          body: notificationData.body,
         },
       };
 
@@ -294,33 +406,70 @@ export const notifyDebtorOnPaymentStatusChange = onDocumentUpdated(
     if (!debtorSnap.exists) return null;
 
     const debtor = debtorSnap.data();
-    const token = debtor?.fcmToken;
-
     const status = after.status;
     const accepted = status === "accepted";
     const rejected = status === "rejected";
     if (!accepted && !rejected) return null;
+    const token = debtor?.fcmToken;
 
     const amount = transaction.amount;
     const formattedAmount = amount
       ? `${amount.toFixed(2).replace(".", ",")}€`
       : "ein Betrag";
-    const creditorName = transaction.creditorName || "der Empfänger";
 
-    const messageTitle = `Zahlung wurde ${
-      accepted ? "akzeptiert" : "abgelehnt"
-    }`;
-    const messageBody = `Deine Zahlung über ${formattedAmount} wurde von ${creditorName} ${
-      accepted ? "akzeptiert" : "abgelehnt"
-    }.`;
+    let debtorLanguage = DEFAULT_LANGUAGE;
+    debtorLanguage = debtorSnap.data()?.languageCode || DEFAULT_LANGUAGE;
+
+    // fetch the notification title and body from firestore
+
+    let notificationKey = accepted
+      ? "payment_request_accepted"
+      : "payment_request_rejected";
+
+    const notificationTemplateSnap = await getFirestore()
+      .collection("notification_templates")
+      .doc(notificationKey)
+      .get();
+    if (!notificationTemplateSnap.exists) {
+      console.warn("No notification template found, exiting.");
+      return null;
+    }
+    const notificationTemplate = notificationTemplateSnap.data();
+    if (!notificationTemplate) {
+      console.warn("No notification template data found, exiting.");
+      return null;
+    }
+
+    let templateForLang = notificationTemplate[debtorLanguage];
+    if (!templateForLang) {
+      console.warn(
+        `No template for language ${debtorLanguage}, falling back to default.`
+      );
+      // Optional: fallback auf DEFAULT_LANGUAGE
+      if (notificationTemplate[DEFAULT_LANGUAGE]) {
+        templateForLang = notificationTemplate[DEFAULT_LANGUAGE];
+      } else {
+        return null;
+      }
+    }
+
+    let notificationBody = templateForLang.body;
+    notificationBody = notificationBody
+      .replace("{name}", transaction.creditorName)
+      .replace("{amount}", formattedAmount);
+
+    let notificationData = {
+      title: templateForLang.title,
+      body: notificationBody,
+    };
 
     await getFirestore()
       .collection("users")
       .doc(transaction.debtorId)
       .collection("notifications")
       .add({
-        title: messageTitle,
-        body: messageBody,
+        title: notificationData.title,
+        body: notificationData.body,
         type: accepted
           ? "payment_request_accepted"
           : "payment_request_rejected",
@@ -332,8 +481,8 @@ export const notifyDebtorOnPaymentStatusChange = onDocumentUpdated(
       const message = {
         token,
         notification: {
-          title: messageTitle,
-          body: messageBody,
+          title: notificationData.title,
+          body: notificationData.body,
         },
       };
 
@@ -348,4 +497,3 @@ export const notifyDebtorOnPaymentStatusChange = onDocumentUpdated(
     return null;
   }
 );
-

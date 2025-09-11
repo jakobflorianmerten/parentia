@@ -55,13 +55,14 @@ extension AuthFailurePatterns on AuthFailure {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( CancelledByUser value)?  cancelledByUser,TResult Function( ServerError value)?  serverError,TResult Function( EmailAlreadyInUse value)?  emailAlreadyInUse,TResult Function( PasswordResetInvalidEmail value)?  passwordResetInvalidEmail,TResult Function( PasswordResetUserNotFound value)?  passwordResetUserNotFound,TResult Function( ReauthenticateUserButNoUserLoggedIn value)?  reauthenticateUserButNoUserLoggedIn,TResult Function( ReauthenticateUserWithDifferentEmail value)?  reauthenticateUserWithDifferentEmail,TResult Function( ReauthenticateUserMismatch value)?  reauthenticateUserMismatch,TResult Function( ReauthenticateInvalidCredential value)?  reauthenticateInvalidCredential,TResult Function( DeleteUserButNeedToReauthenticate value)?  deleteUserButNeedToReauthenticate,TResult Function( InvalidEmailAndPasswordCombination value)?  invalidEmailAndPasswordCombination,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( CancelledByUser value)?  cancelledByUser,TResult Function( ServerError value)?  serverError,TResult Function( EmailAlreadyInUse value)?  emailAlreadyInUse,TResult Function( UserAlreadySignedInOnDifferentDevice value)?  userAlreadySignedInOnDifferentDevice,TResult Function( PasswordResetInvalidEmail value)?  passwordResetInvalidEmail,TResult Function( PasswordResetUserNotFound value)?  passwordResetUserNotFound,TResult Function( ReauthenticateUserButNoUserLoggedIn value)?  reauthenticateUserButNoUserLoggedIn,TResult Function( ReauthenticateUserWithDifferentEmail value)?  reauthenticateUserWithDifferentEmail,TResult Function( ReauthenticateUserMismatch value)?  reauthenticateUserMismatch,TResult Function( ReauthenticateInvalidCredential value)?  reauthenticateInvalidCredential,TResult Function( DeleteUserButNeedToReauthenticate value)?  deleteUserButNeedToReauthenticate,TResult Function( InvalidEmailAndPasswordCombination value)?  invalidEmailAndPasswordCombination,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case CancelledByUser() when cancelledByUser != null:
 return cancelledByUser(_that);case ServerError() when serverError != null:
 return serverError(_that);case EmailAlreadyInUse() when emailAlreadyInUse != null:
-return emailAlreadyInUse(_that);case PasswordResetInvalidEmail() when passwordResetInvalidEmail != null:
+return emailAlreadyInUse(_that);case UserAlreadySignedInOnDifferentDevice() when userAlreadySignedInOnDifferentDevice != null:
+return userAlreadySignedInOnDifferentDevice(_that);case PasswordResetInvalidEmail() when passwordResetInvalidEmail != null:
 return passwordResetInvalidEmail(_that);case PasswordResetUserNotFound() when passwordResetUserNotFound != null:
 return passwordResetUserNotFound(_that);case ReauthenticateUserButNoUserLoggedIn() when reauthenticateUserButNoUserLoggedIn != null:
 return reauthenticateUserButNoUserLoggedIn(_that);case ReauthenticateUserWithDifferentEmail() when reauthenticateUserWithDifferentEmail != null:
@@ -87,13 +88,14 @@ return invalidEmailAndPasswordCombination(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( CancelledByUser value)  cancelledByUser,required TResult Function( ServerError value)  serverError,required TResult Function( EmailAlreadyInUse value)  emailAlreadyInUse,required TResult Function( PasswordResetInvalidEmail value)  passwordResetInvalidEmail,required TResult Function( PasswordResetUserNotFound value)  passwordResetUserNotFound,required TResult Function( ReauthenticateUserButNoUserLoggedIn value)  reauthenticateUserButNoUserLoggedIn,required TResult Function( ReauthenticateUserWithDifferentEmail value)  reauthenticateUserWithDifferentEmail,required TResult Function( ReauthenticateUserMismatch value)  reauthenticateUserMismatch,required TResult Function( ReauthenticateInvalidCredential value)  reauthenticateInvalidCredential,required TResult Function( DeleteUserButNeedToReauthenticate value)  deleteUserButNeedToReauthenticate,required TResult Function( InvalidEmailAndPasswordCombination value)  invalidEmailAndPasswordCombination,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( CancelledByUser value)  cancelledByUser,required TResult Function( ServerError value)  serverError,required TResult Function( EmailAlreadyInUse value)  emailAlreadyInUse,required TResult Function( UserAlreadySignedInOnDifferentDevice value)  userAlreadySignedInOnDifferentDevice,required TResult Function( PasswordResetInvalidEmail value)  passwordResetInvalidEmail,required TResult Function( PasswordResetUserNotFound value)  passwordResetUserNotFound,required TResult Function( ReauthenticateUserButNoUserLoggedIn value)  reauthenticateUserButNoUserLoggedIn,required TResult Function( ReauthenticateUserWithDifferentEmail value)  reauthenticateUserWithDifferentEmail,required TResult Function( ReauthenticateUserMismatch value)  reauthenticateUserMismatch,required TResult Function( ReauthenticateInvalidCredential value)  reauthenticateInvalidCredential,required TResult Function( DeleteUserButNeedToReauthenticate value)  deleteUserButNeedToReauthenticate,required TResult Function( InvalidEmailAndPasswordCombination value)  invalidEmailAndPasswordCombination,}){
 final _that = this;
 switch (_that) {
 case CancelledByUser():
 return cancelledByUser(_that);case ServerError():
 return serverError(_that);case EmailAlreadyInUse():
-return emailAlreadyInUse(_that);case PasswordResetInvalidEmail():
+return emailAlreadyInUse(_that);case UserAlreadySignedInOnDifferentDevice():
+return userAlreadySignedInOnDifferentDevice(_that);case PasswordResetInvalidEmail():
 return passwordResetInvalidEmail(_that);case PasswordResetUserNotFound():
 return passwordResetUserNotFound(_that);case ReauthenticateUserButNoUserLoggedIn():
 return reauthenticateUserButNoUserLoggedIn(_that);case ReauthenticateUserWithDifferentEmail():
@@ -118,13 +120,14 @@ return invalidEmailAndPasswordCombination(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( CancelledByUser value)?  cancelledByUser,TResult? Function( ServerError value)?  serverError,TResult? Function( EmailAlreadyInUse value)?  emailAlreadyInUse,TResult? Function( PasswordResetInvalidEmail value)?  passwordResetInvalidEmail,TResult? Function( PasswordResetUserNotFound value)?  passwordResetUserNotFound,TResult? Function( ReauthenticateUserButNoUserLoggedIn value)?  reauthenticateUserButNoUserLoggedIn,TResult? Function( ReauthenticateUserWithDifferentEmail value)?  reauthenticateUserWithDifferentEmail,TResult? Function( ReauthenticateUserMismatch value)?  reauthenticateUserMismatch,TResult? Function( ReauthenticateInvalidCredential value)?  reauthenticateInvalidCredential,TResult? Function( DeleteUserButNeedToReauthenticate value)?  deleteUserButNeedToReauthenticate,TResult? Function( InvalidEmailAndPasswordCombination value)?  invalidEmailAndPasswordCombination,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( CancelledByUser value)?  cancelledByUser,TResult? Function( ServerError value)?  serverError,TResult? Function( EmailAlreadyInUse value)?  emailAlreadyInUse,TResult? Function( UserAlreadySignedInOnDifferentDevice value)?  userAlreadySignedInOnDifferentDevice,TResult? Function( PasswordResetInvalidEmail value)?  passwordResetInvalidEmail,TResult? Function( PasswordResetUserNotFound value)?  passwordResetUserNotFound,TResult? Function( ReauthenticateUserButNoUserLoggedIn value)?  reauthenticateUserButNoUserLoggedIn,TResult? Function( ReauthenticateUserWithDifferentEmail value)?  reauthenticateUserWithDifferentEmail,TResult? Function( ReauthenticateUserMismatch value)?  reauthenticateUserMismatch,TResult? Function( ReauthenticateInvalidCredential value)?  reauthenticateInvalidCredential,TResult? Function( DeleteUserButNeedToReauthenticate value)?  deleteUserButNeedToReauthenticate,TResult? Function( InvalidEmailAndPasswordCombination value)?  invalidEmailAndPasswordCombination,}){
 final _that = this;
 switch (_that) {
 case CancelledByUser() when cancelledByUser != null:
 return cancelledByUser(_that);case ServerError() when serverError != null:
 return serverError(_that);case EmailAlreadyInUse() when emailAlreadyInUse != null:
-return emailAlreadyInUse(_that);case PasswordResetInvalidEmail() when passwordResetInvalidEmail != null:
+return emailAlreadyInUse(_that);case UserAlreadySignedInOnDifferentDevice() when userAlreadySignedInOnDifferentDevice != null:
+return userAlreadySignedInOnDifferentDevice(_that);case PasswordResetInvalidEmail() when passwordResetInvalidEmail != null:
 return passwordResetInvalidEmail(_that);case PasswordResetUserNotFound() when passwordResetUserNotFound != null:
 return passwordResetUserNotFound(_that);case ReauthenticateUserButNoUserLoggedIn() when reauthenticateUserButNoUserLoggedIn != null:
 return reauthenticateUserButNoUserLoggedIn(_that);case ReauthenticateUserWithDifferentEmail() when reauthenticateUserWithDifferentEmail != null:
@@ -149,12 +152,13 @@ return invalidEmailAndPasswordCombination(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  cancelledByUser,TResult Function()?  serverError,TResult Function()?  emailAlreadyInUse,TResult Function()?  passwordResetInvalidEmail,TResult Function()?  passwordResetUserNotFound,TResult Function()?  reauthenticateUserButNoUserLoggedIn,TResult Function()?  reauthenticateUserWithDifferentEmail,TResult Function()?  reauthenticateUserMismatch,TResult Function()?  reauthenticateInvalidCredential,TResult Function()?  deleteUserButNeedToReauthenticate,TResult Function()?  invalidEmailAndPasswordCombination,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  cancelledByUser,TResult Function()?  serverError,TResult Function()?  emailAlreadyInUse,TResult Function()?  userAlreadySignedInOnDifferentDevice,TResult Function()?  passwordResetInvalidEmail,TResult Function()?  passwordResetUserNotFound,TResult Function()?  reauthenticateUserButNoUserLoggedIn,TResult Function()?  reauthenticateUserWithDifferentEmail,TResult Function()?  reauthenticateUserMismatch,TResult Function()?  reauthenticateInvalidCredential,TResult Function()?  deleteUserButNeedToReauthenticate,TResult Function()?  invalidEmailAndPasswordCombination,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case CancelledByUser() when cancelledByUser != null:
 return cancelledByUser();case ServerError() when serverError != null:
 return serverError();case EmailAlreadyInUse() when emailAlreadyInUse != null:
-return emailAlreadyInUse();case PasswordResetInvalidEmail() when passwordResetInvalidEmail != null:
+return emailAlreadyInUse();case UserAlreadySignedInOnDifferentDevice() when userAlreadySignedInOnDifferentDevice != null:
+return userAlreadySignedInOnDifferentDevice();case PasswordResetInvalidEmail() when passwordResetInvalidEmail != null:
 return passwordResetInvalidEmail();case PasswordResetUserNotFound() when passwordResetUserNotFound != null:
 return passwordResetUserNotFound();case ReauthenticateUserButNoUserLoggedIn() when reauthenticateUserButNoUserLoggedIn != null:
 return reauthenticateUserButNoUserLoggedIn();case ReauthenticateUserWithDifferentEmail() when reauthenticateUserWithDifferentEmail != null:
@@ -180,12 +184,13 @@ return invalidEmailAndPasswordCombination();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  cancelledByUser,required TResult Function()  serverError,required TResult Function()  emailAlreadyInUse,required TResult Function()  passwordResetInvalidEmail,required TResult Function()  passwordResetUserNotFound,required TResult Function()  reauthenticateUserButNoUserLoggedIn,required TResult Function()  reauthenticateUserWithDifferentEmail,required TResult Function()  reauthenticateUserMismatch,required TResult Function()  reauthenticateInvalidCredential,required TResult Function()  deleteUserButNeedToReauthenticate,required TResult Function()  invalidEmailAndPasswordCombination,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  cancelledByUser,required TResult Function()  serverError,required TResult Function()  emailAlreadyInUse,required TResult Function()  userAlreadySignedInOnDifferentDevice,required TResult Function()  passwordResetInvalidEmail,required TResult Function()  passwordResetUserNotFound,required TResult Function()  reauthenticateUserButNoUserLoggedIn,required TResult Function()  reauthenticateUserWithDifferentEmail,required TResult Function()  reauthenticateUserMismatch,required TResult Function()  reauthenticateInvalidCredential,required TResult Function()  deleteUserButNeedToReauthenticate,required TResult Function()  invalidEmailAndPasswordCombination,}) {final _that = this;
 switch (_that) {
 case CancelledByUser():
 return cancelledByUser();case ServerError():
 return serverError();case EmailAlreadyInUse():
-return emailAlreadyInUse();case PasswordResetInvalidEmail():
+return emailAlreadyInUse();case UserAlreadySignedInOnDifferentDevice():
+return userAlreadySignedInOnDifferentDevice();case PasswordResetInvalidEmail():
 return passwordResetInvalidEmail();case PasswordResetUserNotFound():
 return passwordResetUserNotFound();case ReauthenticateUserButNoUserLoggedIn():
 return reauthenticateUserButNoUserLoggedIn();case ReauthenticateUserWithDifferentEmail():
@@ -210,12 +215,13 @@ return invalidEmailAndPasswordCombination();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  cancelledByUser,TResult? Function()?  serverError,TResult? Function()?  emailAlreadyInUse,TResult? Function()?  passwordResetInvalidEmail,TResult? Function()?  passwordResetUserNotFound,TResult? Function()?  reauthenticateUserButNoUserLoggedIn,TResult? Function()?  reauthenticateUserWithDifferentEmail,TResult? Function()?  reauthenticateUserMismatch,TResult? Function()?  reauthenticateInvalidCredential,TResult? Function()?  deleteUserButNeedToReauthenticate,TResult? Function()?  invalidEmailAndPasswordCombination,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  cancelledByUser,TResult? Function()?  serverError,TResult? Function()?  emailAlreadyInUse,TResult? Function()?  userAlreadySignedInOnDifferentDevice,TResult? Function()?  passwordResetInvalidEmail,TResult? Function()?  passwordResetUserNotFound,TResult? Function()?  reauthenticateUserButNoUserLoggedIn,TResult? Function()?  reauthenticateUserWithDifferentEmail,TResult? Function()?  reauthenticateUserMismatch,TResult? Function()?  reauthenticateInvalidCredential,TResult? Function()?  deleteUserButNeedToReauthenticate,TResult? Function()?  invalidEmailAndPasswordCombination,}) {final _that = this;
 switch (_that) {
 case CancelledByUser() when cancelledByUser != null:
 return cancelledByUser();case ServerError() when serverError != null:
 return serverError();case EmailAlreadyInUse() when emailAlreadyInUse != null:
-return emailAlreadyInUse();case PasswordResetInvalidEmail() when passwordResetInvalidEmail != null:
+return emailAlreadyInUse();case UserAlreadySignedInOnDifferentDevice() when userAlreadySignedInOnDifferentDevice != null:
+return userAlreadySignedInOnDifferentDevice();case PasswordResetInvalidEmail() when passwordResetInvalidEmail != null:
 return passwordResetInvalidEmail();case PasswordResetUserNotFound() when passwordResetUserNotFound != null:
 return passwordResetUserNotFound();case ReauthenticateUserButNoUserLoggedIn() when reauthenticateUserButNoUserLoggedIn != null:
 return reauthenticateUserButNoUserLoggedIn();case ReauthenticateUserWithDifferentEmail() when reauthenticateUserWithDifferentEmail != null:
@@ -319,6 +325,38 @@ int get hashCode => runtimeType.hashCode;
 @override
 String toString() {
   return 'AuthFailure.emailAlreadyInUse()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class UserAlreadySignedInOnDifferentDevice implements AuthFailure {
+  const UserAlreadySignedInOnDifferentDevice();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserAlreadySignedInOnDifferentDevice);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AuthFailure.userAlreadySignedInOnDifferentDevice()';
 }
 
 

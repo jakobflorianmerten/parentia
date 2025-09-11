@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -60,12 +61,24 @@ class ImplAuthRepository implements IAuthRepository {
     final emailAddressStr = email.value.getOrElse(() => 'INVALID EMAIL');
     final passwordStr = password.value.getOrElse(() => 'INVALID PASSWORD');
     try {
-      return await _firebaseAuth
-          .signInWithEmailAndPassword(
-            email: emailAddressStr,
-            password: passwordStr,
-          )
-          .then((firebase.UserCredential _) => right(unit));
+      final authResult = await _firebaseAuth.signInWithEmailAndPassword(
+        email: emailAddressStr,
+        password: passwordStr,
+      );
+      final docSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(authResult.user!.uid)
+          .get();
+      final isSignedIn = docSnapshot.data()?['isSignedIn'] == true;
+      if (isSignedIn) {
+        await _firebaseAuth.signOut();
+        return left(AuthFailure.userAlreadySignedInOnDifferentDevice());
+      }
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(authResult.user!.uid)
+          .set({'isSignedIn': true}, SetOptions(merge: true));
+      return right(unit);
     } on firebase.FirebaseAuthException catch (e) {
       if (e.code == 'ERROR_WRONG_PASSWORD' ||
           e.code == 'ERROR_USER_NOT_FOUND') {
@@ -73,11 +86,28 @@ class ImplAuthRepository implements IAuthRepository {
       } else {
         return left(const AuthFailure.serverError());
       }
+    } catch (e) {
+      return left(const AuthFailure.serverError());
     }
   }
 
   @override
   Future<void> signOut() async {
+    if (_firebaseAuth.currentUser == null) {
+      throw Error();
+    }
+    final docSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(_firebaseAuth.currentUser!.uid)
+        .get();
+    final isSignedIn = docSnapshot.data()?['isSignedIn'] == true;
+    if (isSignedIn) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_firebaseAuth.currentUser!.uid)
+          .update({'isSignedIn': false});
+    }
+
     return await _firebaseAuth.signOut();
   }
 

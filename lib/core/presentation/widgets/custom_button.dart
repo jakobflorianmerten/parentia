@@ -52,19 +52,22 @@ class _CustomButtonState extends State<CustomButton>
 
   @override
   Widget build(BuildContext context) {
+    final bool isInactive = widget.isNotActive == true;
+
     return GestureDetector(
       onTapDown: (_) {
         if (widget.isNotActive != null && widget.isNotActive == true) return;
         _controller.forward();
       },
-      onTapUp: (_) {
-        if (widget.isNotActive != null && widget.isNotActive == true) return;
-
-        _controller.reverse();
-        HapticFeedback.mediumImpact();
-
-        widget.onPressed();
-      },
+      onTapUp: isInactive
+          ? null
+          : (_) async {
+              HapticFeedback.mediumImpact();
+              await _controller.reverse();
+              if (mounted) {
+                widget.onPressed();
+              }
+            },
       onTapCancel: () {
         if (widget.isNotActive != null && widget.isNotActive == true) return;
 

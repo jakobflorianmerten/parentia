@@ -33,8 +33,7 @@ class _QrCodeScannerScreenState extends State<QrCodeScannerScreen> {
             onDetect: (BarcodeCapture capture) {
               final String? code = capture.barcodes.first.rawValue;
               if (code != null) {
-                MessageService.show(context, title: 'Success', message: 'Code: ' + code.toString(), type: MessageType.success);
-                GoRouter.of(context).go('/home?qr_code=' + code.toString());
+                GoRouter.of(context).go('/home?code=' + code.toString());
               }
             },
           ),

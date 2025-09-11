@@ -24,16 +24,33 @@ class SigninScreen extends StatelessWidget {
         state.authFailureOrSuccessOption.fold(() {}, (either) {
           either.fold(
             (failure) {
+              if (failure is UserAlreadySignedInOnDifferentDevice) {
+                MessageService.show(
+                  context,
+                  title: AppLocalizations.of(
+                    context,
+                  )!.error_signinUserAlreadySignedInOnDifferentDeviceTitle,
+                  message: AppLocalizations.of(
+                    context,
+                  )!.error_signinUserAlreadySignedInOnDifferentDeviceDescription,
+                  type: MessageType.error,
+                );
+              }
+
               MessageService.show(
                 context,
-                title: AppLocalizations.of(context)!.error_signinInvalidEmailAndPasswordTitle,
-                message: AppLocalizations.of(context)!.error_signinInvalidEmailAndPasswordDescription,
+                title: AppLocalizations.of(
+                  context,
+                )!.error_signinInvalidEmailAndPasswordTitle,
+                message: AppLocalizations.of(
+                  context,
+                )!.error_signinInvalidEmailAndPasswordDescription,
                 type: MessageType.error,
               );
             },
             (_) {
               GoRouter.of(context).go('/home');
-             NotificationService().onLoginOrRegister();
+              NotificationService().onLoginOrRegister();
             },
           );
         });
@@ -65,7 +82,10 @@ class SigninScreen extends StatelessWidget {
                       CustomClickedElement(
                         child: Text(
                           AppLocalizations.of(context)!.forgotPassword,
-                          style: Theme.of(context).textTheme.displayMedium!.copyWith(color: Theme.of(context).colorScheme.primary),
+                          style: Theme.of(context).textTheme.displayMedium!
+                              .copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
                         ),
                         onPressed: () {
                           GoRouter.of(context).push('/forgot-password');

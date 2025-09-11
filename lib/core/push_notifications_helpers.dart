@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -148,4 +149,10 @@ Future<bool> ensureCameraPermission() async {
     return true;
   }
   return false;
+}
+
+
+String getLanguageCode() {
+  final String locale = Platform.localeName;
+  return locale.split('_')[0];
 }

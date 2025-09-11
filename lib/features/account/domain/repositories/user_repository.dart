@@ -17,6 +17,7 @@ abstract class UserRepository {
   Future<Either<UserFailures, Unit>> updateUser(String userId, String? fullName, File? profilePicture, String? email, String? username);
   Future<Either<UserFailures, Unit>> saveNotificationToken(String uid, String fcmToken);
   Future<Either<UserFailures, Unit>> deleteNotificationTokenFromCurrentLoggedInUser(String uid);
+  Future<void> updateUserLanguagePreference(String languageCode);
 
   Future<Either<UserFailures, List<Notification>>> loadAllNotificationsByUserId(String uid);
   Future<Either<UserFailures, Unit>> markNotificationsAsRead(List<Notification> notifications);

@@ -19,13 +19,23 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   late GoRouter _goRouter;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
     _goRouter = GoRouter.of(context);
     _goRouter.routerDelegate.addListener(_handleRouteChange);
   }
 
+  @override
+  void dispose() {
+    _goRouter.routerDelegate.removeListener(_handleRouteChange);
+    super.dispose();
+  }
+
   void _handleRouteChange() {
+    if (!mounted) {
+      return;
+    }
+
     final path = GoRouter.of(
       context,
     ).routerDelegate.currentConfiguration.uri.path;

@@ -180,6 +180,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'The provided email and password do not match.';
 
   @override
+  String get error_signinUserAlreadySignedInOnDifferentDeviceTitle =>
+      'The user is already logged in on another device.';
+
+  @override
+  String get error_signinUserAlreadySignedInOnDifferentDeviceDescription =>
+      'The user is already logged in on another device. A user may only be logged in on one device.';
+
+  @override
   String get error_signupEmailAlreadyInUseTitle => 'Email already in use';
 
   @override

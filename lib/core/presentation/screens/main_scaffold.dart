@@ -12,6 +12,7 @@ import 'package:parentia/custom_toastmessages/message_service.dart';
 import 'package:parentia/custom_toastmessages/overlay_widget.dart';
 import 'package:parentia/features/account/application/blocs/current_user/current_user_bloc.dart';
 import 'package:parentia/features/account/application/blocs/load_notifications/load_notifications_bloc.dart';
+import 'package:parentia/features/account/infrastructure/repositories/user_repository.dart';
 import 'package:parentia/features/notification/presentation/screens/notifications_screen.dart';
 import 'package:parentia/features/transaction/application/blocs/transaction/transaction_bloc.dart';
 import 'package:parentia/features/transaction/presentation/screens/modal_sheet.dart';
@@ -47,6 +48,16 @@ class _MainNavigationScaffoldState extends State<MainNavigationScaffold>
       _notificationService.checkPermissionOnAppResume();
     }
   }
+
+  // @override
+  // void didChangeLocales(List<Locale>? locales) {
+  //   super.didChangeLocales(locales);
+  //   if (locales != null && locales.isNotEmpty) {
+  //     final languageCode = locales.first.languageCode;
+
+  //     locator<UserRepositoryImpl>().updateUserLanguagePreference(languageCode);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

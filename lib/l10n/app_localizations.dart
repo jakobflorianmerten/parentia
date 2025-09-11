@@ -422,6 +422,18 @@ abstract class AppLocalizations {
   /// **'The provided email and password do not match.'**
   String get error_signinInvalidEmailAndPasswordDescription;
 
+  /// No description provided for @error_signinUserAlreadySignedInOnDifferentDeviceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The user is already logged in on another device.'**
+  String get error_signinUserAlreadySignedInOnDifferentDeviceTitle;
+
+  /// No description provided for @error_signinUserAlreadySignedInOnDifferentDeviceDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'The user is already logged in on another device. A user may only be logged in on one device.'**
+  String get error_signinUserAlreadySignedInOnDifferentDeviceDescription;
+
   /// No description provided for @error_signupEmailAlreadyInUseTitle.
   ///
   /// In en, this message translates to:

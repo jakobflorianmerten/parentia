@@ -53,6 +53,8 @@
   "error_createAccountUsernameAlreadyExistsDescription": "Der Nutzername existiert bereits und kann nicht mehrfach vergeben werden. Bitte ändere diesen.", 
   "error_signinInvalidEmailAndPasswordTitle": "Ungültige Passwort- und E-Mail-Kombination", 
   "error_signinInvalidEmailAndPasswordDescription": "Die angegebene E-Mail-Adresse und das Passwort stimmen nicht überein.", 
+  "error_signinUserAlreadySignedInOnDifferentDeviceTitle": "Der Nutzer ist bereits auf einem anderen Gerät eingeloggt.", 
+  "error_signinUserAlreadySignedInOnDifferentDeviceDescription": "Der Nutzer ist bereits auf einem anderen Gerät eingeloggt. Ein Nutzer darf nur an einem Gerät eingeloggt sein.", 
   "error_signupEmailAlreadyInUseTitle": "E-Mail-Adresse bereits in Gebrauch", 
   "error_signupEmailAlreadyInUseDescription": "Die angegebene E-Mail-Adresse ist bereits mit einem Konto verknüpft.", 
   "error_invalidEmailMessageTitle": "Keine valide Email", 
