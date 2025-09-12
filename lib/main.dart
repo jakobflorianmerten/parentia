@@ -18,13 +18,11 @@ import 'l10n/app_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-
-  setup();
   await dotenv.load(fileName: ".env");
   await NotificationService().initialize();
+  setup();
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,
@@ -68,7 +66,6 @@ class GoRouterWrapperWidget extends StatelessWidget {
             routerConfig: router,
             builder: DevicePreview.appBuilder,
             locale: DevicePreview.locale(context),
-            useInheritedMediaQuery: true,
           ),
         );
       },

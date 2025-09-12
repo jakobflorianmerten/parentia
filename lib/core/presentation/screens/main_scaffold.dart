@@ -4,18 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:parentia/core/blocs/qr_code_user_bloc/qr_code_user_bloc.dart';
 import 'package:parentia/core/get_it.dart';
 import 'package:parentia/core/presentation/animation/custom_drawer.dart';
-import 'package:parentia/core/presentation/animation/custom_loading_animation_element.dart';
-import 'package:parentia/core/presentation/screens/qr_code_scanner.dart';
 import 'package:parentia/core/presentation/widgets/bottom_navigation_bar.dart';
 import 'package:parentia/core/push_notifications_helpers.dart';
-import 'package:parentia/custom_toastmessages/message_service.dart';
-import 'package:parentia/custom_toastmessages/overlay_widget.dart';
 import 'package:parentia/features/account/application/blocs/current_user/current_user_bloc.dart';
 import 'package:parentia/features/account/application/blocs/load_notifications/load_notifications_bloc.dart';
-import 'package:parentia/features/account/infrastructure/repositories/user_repository.dart';
 import 'package:parentia/features/notification/presentation/screens/notifications_screen.dart';
 import 'package:parentia/features/transaction/application/blocs/transaction/transaction_bloc.dart';
-import 'package:parentia/features/transaction/presentation/screens/modal_sheet.dart';
 import 'package:provider/provider.dart';
 
 class MainNavigationScaffold extends StatefulWidget {

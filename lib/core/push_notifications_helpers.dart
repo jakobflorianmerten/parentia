@@ -9,7 +9,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:parentia/core/get_it.dart';
 import 'package:parentia/features/account/domain/entities/user.dart';
 import 'package:parentia/features/account/infrastructure/repositories/user_repository.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
@@ -126,29 +125,6 @@ class NotificationService {
   void dispose() {
     _settingsStreamController.close();
   }
-}
-
-Future<bool> ensureCameraPermission() async {
-  var status = await Permission.camera.status;
-
-  if (status.isGranted) {
-    print("Permission is already granted.");
-    return true;
-  }
-
-  if (status.isPermanentlyDenied) {
-    print("Permission is permanently denied. Opening app settings.");
-    await openAppSettings();
-    return false;
-  }
-
-  status = await Permission.camera.request();
-
-  if (status.isGranted) {
-    print("Permission was granted.");
-    return true;
-  }
-  return false;
 }
 
 
