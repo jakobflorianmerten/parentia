@@ -11,15 +11,15 @@ class SplashScreen extends StatelessWidget {
     BlocProvider.of<CurrentUserBloc>(context).add(CurrentUserEvent.checkCurrentUser());
     return BlocListener<CurrentUserBloc, CurrentUserState>(
       listener: (context, state) {
-        // if (state is CurrentUserStateNotAuthenticated) {
-        //   GoRouter.of(context).go('/initial');
-        // }
-        // if (state is CurrentUserStateAuthenticateNoAccount) {
-        //   GoRouter.of(context).go('/create-user');
-        // }
-        // if (state is CurrentUserStateAuthenticateWithAccount) {
-        //   GoRouter.of(context).go('/home');
-        // }
+        if (state is CurrentUserStateNotAuthenticated) {
+          GoRouter.of(context).go('/initial');
+        }
+        if (state is CurrentUserStateAuthenticateNoAccount) {
+          GoRouter.of(context).go('/create-user');
+        }
+        if (state is CurrentUserStateAuthenticateWithAccount) {
+          GoRouter.of(context).go('/home');
+        }
       },
       child: Scaffold(
         body: Stack(
