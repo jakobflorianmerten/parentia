@@ -1,6 +1,4 @@
----
-layout: default
-permalink: /
----
+# Willkommen
 
-{% include_relative PRIVACY_POLICY.md %}
+- [Datenschutzerklärung](PRIVACY_POLICY.md)
+- [Allgemeine Geschäftsbedingungen (AGB)](AGB.md)

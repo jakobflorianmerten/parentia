@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -12,9 +13,17 @@ import 'package:parentia/features/auth/application/register/register_bloc.dart';
 import 'package:parentia/features/auth/domain/auth_failure.dart';
 import 'package:parentia/features/auth/presentation/widgets/signup_email_and_password_form.dart';
 import 'package:parentia/l10n/app_localizations.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
+
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
+  bool hasCheckedLegal = false;
 
   @override
   Widget build(BuildContext context) {
@@ -74,10 +83,83 @@ class SignupScreen extends StatelessWidget {
                       ),
                       addVerticalSpace(30),
                       Expanded(
-                        child: PageView(
-                          physics: NeverScrollableScrollPhysics(),
+                        child: Column(
                           children: [
                             SignupEmailAndPasswordForm(),
+                            addVerticalSpace(20),
+                            Row(
+                              children: [
+                                Checkbox(
+                                  value: hasCheckedLegal,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      hasCheckedLegal = value ?? false;
+                                    });
+                                  },
+                                ),
+                                addHorizontalSpace(5),
+                                Expanded(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodyMedium,
+                                      children: [
+                                        TextSpan(text: 'Ich akzeptiere die '),
+                                        TextSpan(
+                                          text: 'Datenschutzerklärung',
+                                          style: TextStyle(
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.primary,
+                                            decoration:
+                                                TextDecoration.underline,
+                                          ),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () async {
+                                              final url = Uri.parse(
+                                                'https://jakobflorianmerten.github.io/parentia/',
+                                              );
+                                              if (await canLaunchUrl(url)) {
+                                                await launchUrl(
+                                                  url,
+                                                  mode: LaunchMode
+                                                      .inAppWebView,
+                                                );
+                                              }
+                                            },
+                                        ),
+                                        TextSpan(text: ' und die '),
+                                        TextSpan(
+                                          text: 'Nutzungsbedingungen',
+                                          style: TextStyle(
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.primary,
+                                            decoration:
+                                                TextDecoration.underline,
+                                          ),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () async {
+                                              final url = Uri.parse(
+                                                'https://jakobflorianmerten.github.io/parentia/',
+                                              );
+                                              if (await canLaunchUrl(url)) {
+                                                await launchUrl(
+                                                  url,
+                                                  mode: LaunchMode
+                                                      .inAppWebView,
+                                                );
+                                              }
+                                            },
+                                        ),
+                                        TextSpan(text: '.'),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -85,17 +167,24 @@ class SignupScreen extends StatelessWidget {
                   ),
                   BlocBuilder<RegisterBloc, RegisterState>(
                     builder: (context, state) {
+                      bool canSubmit = false;
+                      if (state.email.isValid() &&
+                          state.password.isValid() &&
+                          hasCheckedLegal == true) {
+                        canSubmit = true;
+                      }
                       return Positioned(
                         bottom: 0,
                         right: 0,
                         child: Opacity(
-                          opacity: state.email.isValid() && state.password.isValid() ? 1 : 0.4,
+                          opacity: canSubmit == true ? 1 : 0.4,
                           child: CustomButton(
                             onPressed: () {
                               BlocProvider.of<RegisterBloc>(
                                 context,
                               ).add(RegisterEvent.signUpRequested());
                             },
+                            isNotActive: canSubmit == false,
                             isPrimaryButton: true,
                             icon: Icon(
                               Icons.arrow_forward_ios_rounded,
