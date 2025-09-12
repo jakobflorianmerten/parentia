@@ -52,6 +52,36 @@ class AppLocalizationsDe extends AppLocalizations {
   String get send => 'Abschicken';
 
   @override
+  String get dataPrivacy => 'Datenschutz';
+
+  @override
+  String get dataPrivacyDescription =>
+      'Wir nutzen Firebase Analytics und Crashlytics, um die App-Nutzung zu verstehen und Fehler zu beheben. Dürfen wir anonymisierte Daten zur Verbesserung der App sammeln?';
+
+  @override
+  String get usageAnalysis => 'Nutzungsanalyse';
+
+  @override
+  String get usageAnalysisDescription =>
+      'Hilft uns zu verstehen, wie die App genutzt wird, um sie zu verbessern.';
+
+  @override
+  String get errorReports => 'Fehlerberichte';
+
+  @override
+  String get errorReportsDescription =>
+      'Sendet automatisch Berichte bei Abstürzen, damit wir Fehler beheben können.';
+
+  @override
+  String get rejectAll => 'Alle ablehnen';
+
+  @override
+  String get saveSelected => 'Auswahl speichern';
+
+  @override
+  String get dataPrivacySettings => 'Datenschutz Einstellungen';
+
+  @override
   String get logout => 'Ausloggen';
 
   @override

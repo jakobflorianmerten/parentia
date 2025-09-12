@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:parentia/core/presentation/widgets/crashlytics_analytics_alert_dialog.dart';
 import 'package:parentia/core/presentation/widgets/flutter_helper_methods.dart';
 import 'package:parentia/core/presentation/widgets/navigate_to_widget.dart';
 import 'package:parentia/features/account/presentation/delegates/app_bar_delegate.dart';
 import 'package:parentia/features/account/presentation/widgets/profile_element_widget.dart';
 import 'package:parentia/l10n/app_localizations.dart';
+import 'package:parentia/main.dart';
 
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
@@ -40,6 +42,23 @@ class MoreScreen extends StatelessWidget {
                   ),
                   onPressed: () {
                     GoRouter.of(context).push('/account');
+                  },
+                ),
+                addVerticalSpace(15),
+                NavigatoTWidget(
+                  leadingWidget: Text(
+                    AppLocalizations.of(context)!.dataPrivacySettings,
+                    style: Theme.of(context).textTheme.displayMedium,
+                  ),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CrashlyticsAnalyticsAlertDialog(
+                          consentService: consentService,
+                        );
+                      },
+                    );
                   },
                 ),
                 addVerticalSpace(25),

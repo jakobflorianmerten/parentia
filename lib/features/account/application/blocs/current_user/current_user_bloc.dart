@@ -20,15 +20,17 @@ class CurrentUserBloc extends Bloc<CurrentUserEvent, CurrentUserState> {
 
   CurrentUserBloc(this._authRepo, this._userRepo)
     : super(CurrentUserState.initial()) {
-    _subscription = _userRepo.currentUserStream.listen(
-      (user) {
-        add(CurrentUserEvent.currentUserUpdate(user));
-      },
-      onDone: () {},
-      onError: (error) {
-        // Optional: Fehlerbehandlung
-      },
-    );
+    on<InitializeCurrentUser>((event, emit) {
+      _subscription = _userRepo.currentUserStream.listen(
+        (user) {
+          add(CurrentUserEvent.currentUserUpdate(user));
+        },
+        onDone: () {},
+        onError: (error) {
+          // Optional: Fehlerbehandlung
+        },
+      );
+    });
 
     on<CheckCurrentUser>((event, emit) async {
       final authResult = await _authRepo.getSignedInUser();

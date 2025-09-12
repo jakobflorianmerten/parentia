@@ -1,4 +1,5 @@
 import 'package:device_preview/device_preview.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:parentia/core/consent_service.dart';
 import 'package:parentia/core/get_it.dart';
 import 'package:parentia/core/push_notifications_helpers.dart';
 import 'package:parentia/core/theming.dart';
@@ -15,14 +17,31 @@ import 'package:parentia/features/account/application/blocs/current_user/current
 import 'firebase_options.dart';
 import 'l10n/app_localizations.dart';
 
+final ConsentService consentService = ConsentService();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+
+  setup();
+
+  final analyticsAllowed = await consentService.isAnalyticsAllowed();
+  final crashlyticsAllowed = await consentService.isCrashlyticsAllowed();
+
+  await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(
+    analyticsAllowed,
+  );
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+    crashlyticsAllowed,
+  );
+
+  if (crashlyticsAllowed) {
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  }
+
   await dotenv.load(fileName: ".env");
   await NotificationService().initialize();
-  setup();
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,

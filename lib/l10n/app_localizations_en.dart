@@ -52,6 +52,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String get send => 'Send';
 
   @override
+  String get dataPrivacy => 'Data Privacy';
+
+  @override
+  String get dataPrivacyDescription =>
+      'We use Firebase Analytics and Crashlytics to understand app usage and fix bugs. May we collect anonymized data to improve the app?';
+
+  @override
+  String get usageAnalysis => 'Usage analysis';
+
+  @override
+  String get usageAnalysisDescription =>
+      'Helps us understand how the app is used so we can improve it.';
+
+  @override
+  String get errorReports => 'Error reports';
+
+  @override
+  String get errorReportsDescription =>
+      'Automatically sends reports when crashes occur so that we can fix bugs.';
+
+  @override
+  String get rejectAll => 'Reject All';
+
+  @override
+  String get saveSelected => 'Save Selected';
+
+  @override
+  String get dataPrivacySettings => 'Data Privacy Settings';
+
+  @override
   String get logout => 'Logout';
 
   @override

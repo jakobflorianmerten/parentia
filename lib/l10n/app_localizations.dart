@@ -182,6 +182,60 @@ abstract class AppLocalizations {
   /// **'Send'**
   String get send;
 
+  /// No description provided for @dataPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Privacy'**
+  String get dataPrivacy;
+
+  /// No description provided for @dataPrivacyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'We use Firebase Analytics and Crashlytics to understand app usage and fix bugs. May we collect anonymized data to improve the app?'**
+  String get dataPrivacyDescription;
+
+  /// No description provided for @usageAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage analysis'**
+  String get usageAnalysis;
+
+  /// No description provided for @usageAnalysisDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Helps us understand how the app is used so we can improve it.'**
+  String get usageAnalysisDescription;
+
+  /// No description provided for @errorReports.
+  ///
+  /// In en, this message translates to:
+  /// **'Error reports'**
+  String get errorReports;
+
+  /// No description provided for @errorReportsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically sends reports when crashes occur so that we can fix bugs.'**
+  String get errorReportsDescription;
+
+  /// No description provided for @rejectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject All'**
+  String get rejectAll;
+
+  /// No description provided for @saveSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Selected'**
+  String get saveSelected;
+
+  /// No description provided for @dataPrivacySettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Privacy Settings'**
+  String get dataPrivacySettings;
+
   /// No description provided for @logout.
   ///
   /// In en, this message translates to:

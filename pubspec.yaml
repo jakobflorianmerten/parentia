@@ -62,13 +62,14 @@ dependencies:
   provider: ^6.1.5
   qr_flutter: ^4.1.0
   rxdart: ^0.28.0
+  shared_preferences: ^2.5.3
   wolt_modal_sheet: ^0.11.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-flutter_native_splash: 
+flutter_native_splash:
   image: assets/images/logo.png
   background_image: assets/images/splash_background.png
 
