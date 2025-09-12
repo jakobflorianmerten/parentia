@@ -39,6 +39,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String get paymentDate => 'Zahlungsziel';
 
   @override
+  String get iacceptthe => 'Ich akzeptiere die ';
+
+  @override
+  String get privacyPolicy => 'Datenschutzerklärung';
+
+  @override
+  String get andThe => ' und die ';
+
+  @override
+  String get termsOfUse => 'Nutzungsbedingungen';
+
+  @override
   String get paymentDateDescription =>
       'Wähle das Datum für das Zahlungsziel für diese TRansaktion aus. Dein Transaktionspartner wird an das Datum erinnert.';
 

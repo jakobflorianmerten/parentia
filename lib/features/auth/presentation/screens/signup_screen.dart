@@ -105,9 +105,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                         context,
                                       ).textTheme.bodyMedium,
                                       children: [
-                                        TextSpan(text: 'Ich akzeptiere die '),
+                                        TextSpan(text: AppLocalizations.of(context)!.iacceptthe),
                                         TextSpan(
-                                          text: 'Datenschutzerklärung',
+                                          text: AppLocalizations.of(context)!.privacyPolicy,
                                           style: TextStyle(
                                             color: Theme.of(
                                               context,
@@ -118,7 +118,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                           recognizer: TapGestureRecognizer()
                                             ..onTap = () async {
                                               final url = Uri.parse(
-                                                'https://jakobflorianmerten.github.io/parentia/',
+                                                'https://jakobflorianmerten.github.io/parentia/PRIVACY_POLICY.html',
                                               );
                                               if (await canLaunchUrl(url)) {
                                                 await launchUrl(
@@ -129,9 +129,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                               }
                                             },
                                         ),
-                                        TextSpan(text: ' und die '),
+                                        TextSpan(text: AppLocalizations.of(context)!.andThe),
                                         TextSpan(
-                                          text: 'Nutzungsbedingungen',
+                                          text: AppLocalizations.of(context)!.termsOfUse,
                                           style: TextStyle(
                                             color: Theme.of(
                                               context,
@@ -142,7 +142,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                           recognizer: TapGestureRecognizer()
                                             ..onTap = () async {
                                               final url = Uri.parse(
-                                                'https://jakobflorianmerten.github.io/parentia/',
+                                                'https://jakobflorianmerten.github.io/parentia/TERMS_OF_USE.html',
                                               );
                                               if (await canLaunchUrl(url)) {
                                                 await launchUrl(

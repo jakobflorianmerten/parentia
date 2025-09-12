@@ -7,6 +7,7 @@ import 'package:parentia/features/account/presentation/delegates/app_bar_delegat
 import 'package:parentia/features/account/presentation/widgets/profile_element_widget.dart';
 import 'package:parentia/l10n/app_localizations.dart';
 import 'package:parentia/main.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
@@ -59,6 +60,42 @@ class MoreScreen extends StatelessWidget {
                         );
                       },
                     );
+                  },
+                ),
+                addVerticalSpace(15),
+                NavigatoTWidget(
+                  leadingWidget: Text(
+                    AppLocalizations.of(context)!.privacyPolicy,
+                    style: Theme.of(context).textTheme.displayMedium,
+                  ),
+                  onPressed: () async {
+                    final url = Uri.parse(
+                      'https://jakobflorianmerten.github.io/parentia/PRIVACY_POLICY.html',
+                    );
+                    if (await canLaunchUrl(url)) {
+                      await launchUrl(
+                        url,
+                        mode: LaunchMode.inAppWebView,
+                      );
+                    }
+                  },
+                ),
+                addVerticalSpace(15),
+                NavigatoTWidget(
+                  leadingWidget: Text(
+                    AppLocalizations.of(context)!.termsOfUse,
+                    style: Theme.of(context).textTheme.displayMedium,
+                  ),
+                  onPressed: () async {
+                    final url = Uri.parse(
+                      'https://jakobflorianmerten.github.io/parentia/TERMS_OF_USE.html',
+                    );
+                    if (await canLaunchUrl(url)) {
+                      await launchUrl(
+                        url,
+                        mode: LaunchMode.inAppWebView,
+                      );
+                    }
                   },
                 ),
                 addVerticalSpace(25),

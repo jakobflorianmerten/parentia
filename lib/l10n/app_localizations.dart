@@ -158,6 +158,30 @@ abstract class AppLocalizations {
   /// **'Payment Date'**
   String get paymentDate;
 
+  /// No description provided for @iacceptthe.
+  ///
+  /// In en, this message translates to:
+  /// **'I accept the '**
+  String get iacceptthe;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @andThe.
+  ///
+  /// In en, this message translates to:
+  /// **' and the '**
+  String get andThe;
+
+  /// No description provided for @termsOfUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of use'**
+  String get termsOfUse;
+
   /// No description provided for @paymentDateDescription.
   ///
   /// In en, this message translates to:

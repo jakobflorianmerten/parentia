@@ -39,6 +39,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paymentDate => 'Payment Date';
 
   @override
+  String get iacceptthe => 'I accept the ';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get andThe => ' and the ';
+
+  @override
+  String get termsOfUse => 'Terms of use';
+
+  @override
   String get paymentDateDescription =>
       'Select the payment date for this transaction. Your transaction partner will be reminded of the date.';
 
