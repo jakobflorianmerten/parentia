@@ -26,7 +26,7 @@ final locator = GetIt.instance;
 void setup() {
 
   // GoRouter
-  locator.registerLazySingleton<GoRouter>(() => router_config);
+  // locator.registerLazySingleton<GoRouter>(() => configureGoRouter(status));
 
   // Repositories
   locator.registerLazySingleton(() => UserRepositoryImpl());

@@ -24,6 +24,11 @@ class LoadNotificationsBloc
 
     on<LoadNotifications>((event, emit) async {
       emit(LoadNotificationsState.loading());
+      if (FirebaseAuth.instance.currentUser == null) {
+        emit(LoadNotificationsState.initial());
+        return;
+      }
+
       String uid = FirebaseAuth.instance.currentUser!.uid;
       final result = await _userRepo.loadAllNotificationsByUserId(uid);
       emit(

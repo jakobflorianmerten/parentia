@@ -180,6 +180,7 @@ class CurrentTransactionElement extends StatelessWidget {
                     transaction.status == TransactionStatus.payment_pending
                 ? Column(
                     children: [
+                      addVerticalSpace(15),
                       TwoActionButtons(
                         textLeft: AppLocalizations.of(context)!.reject,
                         textRight: AppLocalizations.of(context)!.accept,

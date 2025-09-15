@@ -176,6 +176,12 @@ abstract class AppLocalizations {
   /// **' and the '**
   String get andThe;
 
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
   /// No description provided for @termsOfUse.
   ///
   /// In en, this message translates to:

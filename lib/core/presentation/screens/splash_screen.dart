@@ -35,14 +35,14 @@ class _SplashScreenState extends State<SplashScreen> {
         },
       );
     }
-    if (context.mounted) {
-      BlocProvider.of<CurrentUserBloc>(
-        context,
-      ).add(CurrentUserEvent.initializeCurrentUser());
-            BlocProvider.of<CurrentUserBloc>(
-        context,
-      ).add(CurrentUserEvent.checkCurrentUser());
-    }
+    // if (context.mounted) {
+    //   BlocProvider.of<CurrentUserBloc>(
+    //     context,
+    //   ).add(CurrentUserEvent.initializeCurrentUser());
+    //         BlocProvider.of<CurrentUserBloc>(
+    //     context,
+    //   ).add(CurrentUserEvent.checkCurrentUser());
+    // }
   }
 
   @override

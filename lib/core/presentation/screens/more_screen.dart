@@ -48,54 +48,11 @@ class MoreScreen extends StatelessWidget {
                 addVerticalSpace(15),
                 NavigatoTWidget(
                   leadingWidget: Text(
-                    AppLocalizations.of(context)!.dataPrivacySettings,
+                    AppLocalizations.of(context)!.settings,
                     style: Theme.of(context).textTheme.displayMedium,
                   ),
                   onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return CrashlyticsAnalyticsAlertDialog(
-                          consentService: consentService,
-                        );
-                      },
-                    );
-                  },
-                ),
-                addVerticalSpace(15),
-                NavigatoTWidget(
-                  leadingWidget: Text(
-                    AppLocalizations.of(context)!.privacyPolicy,
-                    style: Theme.of(context).textTheme.displayMedium,
-                  ),
-                  onPressed: () async {
-                    final url = Uri.parse(
-                      'https://jakobflorianmerten.github.io/parentia/PRIVACY_POLICY.html',
-                    );
-                    if (await canLaunchUrl(url)) {
-                      await launchUrl(
-                        url,
-                        mode: LaunchMode.inAppWebView,
-                      );
-                    }
-                  },
-                ),
-                addVerticalSpace(15),
-                NavigatoTWidget(
-                  leadingWidget: Text(
-                    AppLocalizations.of(context)!.termsOfUse,
-                    style: Theme.of(context).textTheme.displayMedium,
-                  ),
-                  onPressed: () async {
-                    final url = Uri.parse(
-                      'https://jakobflorianmerten.github.io/parentia/TERMS_OF_USE.html',
-                    );
-                    if (await canLaunchUrl(url)) {
-                      await launchUrl(
-                        url,
-                        mode: LaunchMode.inAppWebView,
-                      );
-                    }
+                    GoRouter.of(context).push('/settings');
                   },
                 ),
                 addVerticalSpace(25),

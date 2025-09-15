@@ -48,6 +48,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get andThe => ' und die ';
 
   @override
+  String get settings => 'Einstellungen';
+
+  @override
   String get termsOfUse => 'Nutzungsbedingungen';
 
   @override

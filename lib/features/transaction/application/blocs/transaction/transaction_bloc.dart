@@ -18,9 +18,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       result.fold(
         (failure) {
           emit(
-            TransactionState.error(
-              errorMessage: "Es ist etwas schief gelaufen",
-            ),
+            TransactionState.error(),
           );
         },
         (success) {
@@ -34,7 +32,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       final result = await _repo.declineTransaction(event.transactionId);
       result.fold(
         (failure) {
-          //emit(TransactionState.error(errorMessage: "Es ist etwas schief gelaufen"));
+          emit(TransactionState.error());
         },
         (success) {
           emit(TransactionState.success(transactionId: event.transactionId));
@@ -47,7 +45,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       final result = await _repo.payTransaction(event.transactionId);
       result.fold(
         (failure) {
-          emit(TransactionState.error(errorMessage: "Es ist etwas schief gelaufen"));
+          emit(TransactionState.error());
         },
         (success) {
           emit(TransactionState.success(transactionId: event.transactionId));
@@ -60,7 +58,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       final result = await _repo.acceptPayment(event.transactionId);
       result.fold(
         (failure) {
-          emit(TransactionState.error(errorMessage: "Es ist etwas schief gelaufen"));
+          emit(TransactionState.error());
         },
         (success) {
           emit(TransactionState.success(transactionId: event.transactionId));
@@ -74,9 +72,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       result.fold(
         (failure) {
           emit(
-            TransactionState.error(
-              errorMessage: "Es ist etwas schief gelaufen",
-            ),
+            TransactionState.error(),
           );
         },
         (success) {

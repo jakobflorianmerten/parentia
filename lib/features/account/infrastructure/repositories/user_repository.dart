@@ -41,18 +41,22 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   Stream<List<Notification>> getNotificationsStream() {
-    String currentUserId = _auth.currentUser!.uid;
-    return _firestore
-        .collection('users')
-        .doc(currentUserId)
-        .collection('notifications')
-        .orderBy('createdAt', descending: true)
-        .snapshots()
-        .map(
-          (snapshot) => snapshot.docs
-              .map((doc) => Notification.fromFirestore(doc))
-              .toList(),
-        );
+    return _auth.authStateChanges().switchMap((authUser) {
+      if (authUser == null) {
+        return Stream<List<Notification>>.empty();
+      }
+      return _firestore
+          .collection('users')
+          .doc(authUser.uid)
+          .collection('notifications')
+          .orderBy('createdAt', descending: true)
+          .snapshots()
+          .map(
+            (snapshot) => snapshot.docs
+                .map((doc) => Notification.fromFirestore(doc))
+                .toList(),
+          );
+    });
   }
 
   static Future<User?> getCurrentUser() async {
@@ -109,14 +113,13 @@ class UserRepositoryImpl implements UserRepository {
 
       final String currentLangCode = getLanguageCode();
 
-
       // then save the user data to firestore
       final data = {
         'name': fullName,
         'username': username,
         'profileImage': profileImagePath,
         'email': email,
-        'languageCode': currentLangCode
+        'languageCode': currentLangCode,
       };
 
       await _firestore
@@ -138,21 +141,23 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<void> updateUserLanguagePreference(String languageCode) async {
-  final user = _auth.currentUser;
-  if (user == null) {
-    return;
+    final user = _auth.currentUser;
+    if (user == null) {
+      return;
+    }
+    final String userId = user.uid;
+    final DocumentReference userDocRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId);
+    try {
+      await userDocRef.set({
+        'languageCode': languageCode,
+      }, SetOptions(merge: true));
+      print("User language preference updated successfully to: $languageCode");
+    } catch (e) {
+      print("Error updating user language preference: $e");
+    }
   }
-  final String userId = user.uid;
-  final DocumentReference userDocRef = FirebaseFirestore.instance.collection('users').doc(userId);
-  try {
-    await userDocRef.set({
-      'languageCode': languageCode, 
-    }, SetOptions(merge: true));
-    print("User language preference updated successfully to: $languageCode");
-  } catch (e) {
-    print("Error updating user language preference: $e");
-  }
-}
 
   @override
   Future<Either<UserFailures, Unit>> updateUser(
@@ -295,7 +300,8 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Either<UserFailures, Unit>> deleteNotificationTokenFromCurrentLoggedInUser(String uid) async {
+  Future<Either<UserFailures, Unit>>
+  deleteNotificationTokenFromCurrentLoggedInUser(String uid) async {
     try {
       await _firestore.collection('users').doc(uid).update({
         'fcmToken': '',

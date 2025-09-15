@@ -28,6 +28,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       } else {
         emit(
           state.copyWith(
+            authFailureOrSuccessOption: none(),
+
             email: email,
           ),
         );
@@ -47,6 +49,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       } else {
         emit(
           state.copyWith(
+            authFailureOrSuccessOption: none(),
+
             password: password,
           ),
         );
@@ -79,12 +83,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           ),
         );
       } else {
-        emit(
-          state.copyWith(
-            isSubmitting: false, 
-            showErrorMessages: true
-          )
-        );
+        emit(state.copyWith(isSubmitting: false, showErrorMessages: true));
       }
     });
   }

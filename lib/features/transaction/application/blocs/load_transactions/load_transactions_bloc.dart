@@ -30,10 +30,10 @@ class LoadTransactionsBloc
 
       result.fold((failure) {}, (transactions) {
         List<Transaction> activeTransactions = transactions
-            .where((element) => element.status == TransactionStatus.active)
+            .where((element) => element.status != TransactionStatus.pending)
             .toList();
         List<Transaction> notActiveTransactions = transactions
-            .where((element) => element.status != TransactionStatus.active)
+            .where((element) => element.status == TransactionStatus.pending)
             .toList();
 
         emit(
@@ -48,10 +48,10 @@ class LoadTransactionsBloc
 
     on<UpdateTransactions>((event, emit) {
       List<Transaction> activeTransactions = event.transactions
-          .where((element) => element.status == TransactionStatus.active)
+          .where((element) => element.status != TransactionStatus.pending)
           .toList();
       List<Transaction> notActiveTransactions = event.transactions
-          .where((element) => element.status != TransactionStatus.active)
+          .where((element) => element.status == TransactionStatus.pending)
           .toList();
       emit(
         LoadTransactionsState.success(

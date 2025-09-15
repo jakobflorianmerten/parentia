@@ -673,12 +673,12 @@ return success(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  inital,TResult Function( String transactionId)?  loading,TResult Function( String errorMessage)?  error,TResult Function( String transactionId)?  success,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  inital,TResult Function( String transactionId)?  loading,TResult Function()?  error,TResult Function( String transactionId)?  success,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case TransactionStateInitial() when inital != null:
 return inital();case TransactionStateLoading() when loading != null:
 return loading(_that.transactionId);case TransactionStateError() when error != null:
-return error(_that.errorMessage);case TransactionStateSuccess() when success != null:
+return error();case TransactionStateSuccess() when success != null:
 return success(_that.transactionId);case _:
   return orElse();
 
@@ -697,12 +697,12 @@ return success(_that.transactionId);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  inital,required TResult Function( String transactionId)  loading,required TResult Function( String errorMessage)  error,required TResult Function( String transactionId)  success,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  inital,required TResult Function( String transactionId)  loading,required TResult Function()  error,required TResult Function( String transactionId)  success,}) {final _that = this;
 switch (_that) {
 case TransactionStateInitial():
 return inital();case TransactionStateLoading():
 return loading(_that.transactionId);case TransactionStateError():
-return error(_that.errorMessage);case TransactionStateSuccess():
+return error();case TransactionStateSuccess():
 return success(_that.transactionId);case _:
   throw StateError('Unexpected subclass');
 
@@ -720,12 +720,12 @@ return success(_that.transactionId);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  inital,TResult? Function( String transactionId)?  loading,TResult? Function( String errorMessage)?  error,TResult? Function( String transactionId)?  success,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  inital,TResult? Function( String transactionId)?  loading,TResult? Function()?  error,TResult? Function( String transactionId)?  success,}) {final _that = this;
 switch (_that) {
 case TransactionStateInitial() when inital != null:
 return inital();case TransactionStateLoading() when loading != null:
 return loading(_that.transactionId);case TransactionStateError() when error != null:
-return error(_that.errorMessage);case TransactionStateSuccess() when success != null:
+return error();case TransactionStateSuccess() when success != null:
 return success(_that.transactionId);case _:
   return null;
 
@@ -836,67 +836,33 @@ as String,
 
 
 class TransactionStateError implements TransactionState {
-  const TransactionStateError({required this.errorMessage});
+  const TransactionStateError();
   
 
- final  String errorMessage;
 
-/// Create a copy of TransactionState
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$TransactionStateErrorCopyWith<TransactionStateError> get copyWith => _$TransactionStateErrorCopyWithImpl<TransactionStateError>(this, _$identity);
+
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TransactionStateError&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TransactionStateError);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,errorMessage);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'TransactionState.error(errorMessage: $errorMessage)';
+  return 'TransactionState.error()';
 }
 
 
 }
 
-/// @nodoc
-abstract mixin class $TransactionStateErrorCopyWith<$Res> implements $TransactionStateCopyWith<$Res> {
-  factory $TransactionStateErrorCopyWith(TransactionStateError value, $Res Function(TransactionStateError) _then) = _$TransactionStateErrorCopyWithImpl;
-@useResult
-$Res call({
- String errorMessage
-});
 
 
-
-
-}
-/// @nodoc
-class _$TransactionStateErrorCopyWithImpl<$Res>
-    implements $TransactionStateErrorCopyWith<$Res> {
-  _$TransactionStateErrorCopyWithImpl(this._self, this._then);
-
-  final TransactionStateError _self;
-  final $Res Function(TransactionStateError) _then;
-
-/// Create a copy of TransactionState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? errorMessage = null,}) {
-  return _then(TransactionStateError(
-errorMessage: null == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
-as String,
-  ));
-}
-
-
-}
 
 /// @nodoc
 

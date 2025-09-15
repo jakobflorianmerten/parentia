@@ -55,12 +55,11 @@ extension CurrentUserEventPatterns on CurrentUserEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( CheckCurrentUser value)?  checkCurrentUser,TResult Function( InitializeCurrentUser value)?  initializeCurrentUser,TResult Function( SignOutCurrentUser value)?  signOutCurrentUser,TResult Function( CurrentUserUpdate value)?  currentUserUpdate,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( CheckCurrentUser value)?  checkCurrentUser,TResult Function( SignOutCurrentUser value)?  signOutCurrentUser,TResult Function( CurrentUserUpdate value)?  currentUserUpdate,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case CheckCurrentUser() when checkCurrentUser != null:
-return checkCurrentUser(_that);case InitializeCurrentUser() when initializeCurrentUser != null:
-return initializeCurrentUser(_that);case SignOutCurrentUser() when signOutCurrentUser != null:
+return checkCurrentUser(_that);case SignOutCurrentUser() when signOutCurrentUser != null:
 return signOutCurrentUser(_that);case CurrentUserUpdate() when currentUserUpdate != null:
 return currentUserUpdate(_that);case _:
   return orElse();
@@ -80,12 +79,11 @@ return currentUserUpdate(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( CheckCurrentUser value)  checkCurrentUser,required TResult Function( InitializeCurrentUser value)  initializeCurrentUser,required TResult Function( SignOutCurrentUser value)  signOutCurrentUser,required TResult Function( CurrentUserUpdate value)  currentUserUpdate,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( CheckCurrentUser value)  checkCurrentUser,required TResult Function( SignOutCurrentUser value)  signOutCurrentUser,required TResult Function( CurrentUserUpdate value)  currentUserUpdate,}){
 final _that = this;
 switch (_that) {
 case CheckCurrentUser():
-return checkCurrentUser(_that);case InitializeCurrentUser():
-return initializeCurrentUser(_that);case SignOutCurrentUser():
+return checkCurrentUser(_that);case SignOutCurrentUser():
 return signOutCurrentUser(_that);case CurrentUserUpdate():
 return currentUserUpdate(_that);case _:
   throw StateError('Unexpected subclass');
@@ -104,12 +102,11 @@ return currentUserUpdate(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( CheckCurrentUser value)?  checkCurrentUser,TResult? Function( InitializeCurrentUser value)?  initializeCurrentUser,TResult? Function( SignOutCurrentUser value)?  signOutCurrentUser,TResult? Function( CurrentUserUpdate value)?  currentUserUpdate,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( CheckCurrentUser value)?  checkCurrentUser,TResult? Function( SignOutCurrentUser value)?  signOutCurrentUser,TResult? Function( CurrentUserUpdate value)?  currentUserUpdate,}){
 final _that = this;
 switch (_that) {
 case CheckCurrentUser() when checkCurrentUser != null:
-return checkCurrentUser(_that);case InitializeCurrentUser() when initializeCurrentUser != null:
-return initializeCurrentUser(_that);case SignOutCurrentUser() when signOutCurrentUser != null:
+return checkCurrentUser(_that);case SignOutCurrentUser() when signOutCurrentUser != null:
 return signOutCurrentUser(_that);case CurrentUserUpdate() when currentUserUpdate != null:
 return currentUserUpdate(_that);case _:
   return null;
@@ -128,11 +125,10 @@ return currentUserUpdate(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  checkCurrentUser,TResult Function()?  initializeCurrentUser,TResult Function()?  signOutCurrentUser,TResult Function( User user)?  currentUserUpdate,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  checkCurrentUser,TResult Function()?  signOutCurrentUser,TResult Function( User user)?  currentUserUpdate,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case CheckCurrentUser() when checkCurrentUser != null:
-return checkCurrentUser();case InitializeCurrentUser() when initializeCurrentUser != null:
-return initializeCurrentUser();case SignOutCurrentUser() when signOutCurrentUser != null:
+return checkCurrentUser();case SignOutCurrentUser() when signOutCurrentUser != null:
 return signOutCurrentUser();case CurrentUserUpdate() when currentUserUpdate != null:
 return currentUserUpdate(_that.user);case _:
   return orElse();
@@ -152,11 +148,10 @@ return currentUserUpdate(_that.user);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  checkCurrentUser,required TResult Function()  initializeCurrentUser,required TResult Function()  signOutCurrentUser,required TResult Function( User user)  currentUserUpdate,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  checkCurrentUser,required TResult Function()  signOutCurrentUser,required TResult Function( User user)  currentUserUpdate,}) {final _that = this;
 switch (_that) {
 case CheckCurrentUser():
-return checkCurrentUser();case InitializeCurrentUser():
-return initializeCurrentUser();case SignOutCurrentUser():
+return checkCurrentUser();case SignOutCurrentUser():
 return signOutCurrentUser();case CurrentUserUpdate():
 return currentUserUpdate(_that.user);case _:
   throw StateError('Unexpected subclass');
@@ -175,11 +170,10 @@ return currentUserUpdate(_that.user);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  checkCurrentUser,TResult? Function()?  initializeCurrentUser,TResult? Function()?  signOutCurrentUser,TResult? Function( User user)?  currentUserUpdate,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  checkCurrentUser,TResult? Function()?  signOutCurrentUser,TResult? Function( User user)?  currentUserUpdate,}) {final _that = this;
 switch (_that) {
 case CheckCurrentUser() when checkCurrentUser != null:
-return checkCurrentUser();case InitializeCurrentUser() when initializeCurrentUser != null:
-return initializeCurrentUser();case SignOutCurrentUser() when signOutCurrentUser != null:
+return checkCurrentUser();case SignOutCurrentUser() when signOutCurrentUser != null:
 return signOutCurrentUser();case CurrentUserUpdate() when currentUserUpdate != null:
 return currentUserUpdate(_that.user);case _:
   return null;
@@ -213,38 +207,6 @@ int get hashCode => runtimeType.hashCode;
 @override
 String toString() {
   return 'CurrentUserEvent.checkCurrentUser()';
-}
-
-
-}
-
-
-
-
-/// @nodoc
-
-
-class InitializeCurrentUser implements CurrentUserEvent {
-  const InitializeCurrentUser();
-  
-
-
-
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is InitializeCurrentUser);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-  return 'CurrentUserEvent.initializeCurrentUser()';
 }
 
 
