@@ -203,6 +203,7 @@ class UserRepositoryImpl implements UserRepository {
       final result = await _firestore
           .collection('users')
           .where(FieldPath.documentId, isNotEqualTo: currentUid)
+          .limit(10)
           .get();
       final users = result.docs.map((doc) {
         final data = doc.data();
@@ -322,6 +323,7 @@ class UserRepositoryImpl implements UserRepository {
           .doc(uid)
           .collection('notifications')
           .orderBy('createdAt', descending: true)
+          .limit(10)
           .get();
       final notifications = result.docs
           .map((doc) => Notification.fromFirestore(doc))

@@ -12,60 +12,62 @@ class InitialScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Image.asset(
-            'assets/images/splash_background.png',
-            width: double.infinity,
-            fit: BoxFit.fitWidth,
-          ),
-          Positioned(
-            bottom: 10,
-            left: 0,
-            right: 0,
-            child: Padding(
-              padding: EdgeInsetsGeometry.all(20),
-              child: Column(
-                children: [
-                  CustomButton(
-                    onPressed: () {
-                      GoRouter.of(context).push('/signin');
-                    },
-                    text: AppLocalizations.of(context)!.login.toUpperCase(),
-                    width: double.infinity,
-                    isPrimaryButton: true,
-                  ),
-                  addVerticalSpace(10),
-                  CustomButton(
-                    onPressed: () {
-                      GoRouter.of(context).push('/signup');
-                    },
-                    text: AppLocalizations.of(context)!.register.toUpperCase(),
-                    width: double.infinity,
-                  ),
-                  addVerticalSpace(10),
-                  CustomClickedElement(
-                    child: Text(
-                      AppLocalizations.of(context)!.dataPrivacySettings,
+    return ConsentWrapper(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Image.asset(
+              'assets/images/splash_background.png',
+              width: double.infinity,
+              fit: BoxFit.fitWidth,
+            ),
+            Positioned(
+              bottom: 10,
+              left: 0,
+              right: 0,
+              child: Padding(
+                padding: EdgeInsetsGeometry.all(20),
+                child: Column(
+                  children: [
+                    CustomButton(
+                      onPressed: () {
+                        GoRouter.of(context).push('/signin');
+                      },
+                      text: AppLocalizations.of(context)!.login.toUpperCase(),
+                      width: double.infinity,
+                      isPrimaryButton: true,
                     ),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return CrashlyticsAnalyticsAlertDialog(
-                            consentService: consentService,
-                          );
-                        },
-                      );
-                    },
-                  ),
-                  addVerticalSpace(20),
-                ],
+                    addVerticalSpace(10),
+                    CustomButton(
+                      onPressed: () {
+                        GoRouter.of(context).push('/signup');
+                      },
+                      text: AppLocalizations.of(context)!.register.toUpperCase(),
+                      width: double.infinity,
+                    ),
+                    addVerticalSpace(10),
+                    CustomClickedElement(
+                      child: Text(
+                        AppLocalizations.of(context)!.dataPrivacySettings,
+                      ),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CrashlyticsAnalyticsAlertDialog(
+                              consentService: consentService,
+                            );
+                          },
+                        );
+                      },
+                    ),
+                    addVerticalSpace(20),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

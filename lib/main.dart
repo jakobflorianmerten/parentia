@@ -40,7 +40,8 @@ void main() async {
   FlutterNativeSplash.remove();
   runApp(
     DevicePreview(
-      enabled: !kReleaseMode,
+      // enabled: !kReleaseMode,
+      enabled: false,
       builder: (context) => MyApp(status: userStatus),
     ),
   );
@@ -110,24 +111,6 @@ class _GoRouterWrapperWidgetState extends State<GoRouterWrapperWidget> {
     if (_router == null) {
       _router = configureGoRouter(widget.status);
     }
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => _handleConsentAndInitialize(),
-    );
-  }
-
-  Future<void> _handleConsentAndInitialize() async {
-    final hasBeenAsked = await consentService.hasConsentBeenAsked();
-    if (!hasBeenAsked && context.mounted) {
-      await showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return CrashlyticsAnalyticsAlertDialog(
-            consentService: consentService,
-          );
-        },
-      );
-    }
   }
 
   @override
@@ -152,11 +135,52 @@ class _GoRouterWrapperWidgetState extends State<GoRouterWrapperWidget> {
             ],
             theme: darkTheme,
             routerConfig: router,
-            builder: DevicePreview.appBuilder,
+            builder: (context, child) {
+              return DevicePreview.appBuilder(context, child);
+            },
             locale: DevicePreview.locale(context),
           ),
         );
       },
     );
+  }
+}
+
+class ConsentWrapper extends StatefulWidget {
+  final Widget? child;
+
+  const ConsentWrapper({super.key, this.child});
+
+  @override
+  State<ConsentWrapper> createState() => _ConsentWrapperState();
+}
+
+class _ConsentWrapperState extends State<ConsentWrapper> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _handleConsentAndInitialize();
+    });
+  }
+
+  Future<void> _handleConsentAndInitialize() async {
+    final hasBeenAsked = await consentService.hasConsentBeenAsked();
+    if (!hasBeenAsked && context.mounted) {
+      await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return CrashlyticsAnalyticsAlertDialog(
+            consentService: consentService,
+          );
+        },
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child ?? Container();
   }
 }

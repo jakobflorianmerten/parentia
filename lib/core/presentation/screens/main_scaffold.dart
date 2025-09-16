@@ -10,6 +10,7 @@ import 'package:parentia/features/account/application/blocs/current_user/current
 import 'package:parentia/features/account/application/blocs/load_notifications/load_notifications_bloc.dart';
 import 'package:parentia/features/notification/presentation/screens/notifications_screen.dart';
 import 'package:parentia/features/transaction/application/blocs/transaction/transaction_bloc.dart';
+import 'package:parentia/main.dart';
 import 'package:provider/provider.dart';
 
 class MainNavigationScaffold extends StatefulWidget {
@@ -53,47 +54,49 @@ class _MainNavigationScaffoldState extends State<MainNavigationScaffold>
       return widget.child;
     }
 
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => locator<TransactionBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => locator<QrCodeUserBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => locator<LoadNotificationsBloc>(),
-        ),
-      ],
-      child: BlocConsumer<CurrentUserBloc, CurrentUserState>(
-        listener: (context, state) {
-          if (state is CurrentUserStateNotAuthenticated) {
-            GoRouter.of(context).go('/initial');
-          }
-        },
-        builder: (context, state) {
-          if (state is CurrentUserStateAuthenticateWithAccount) {
-            _notificationService.requestPermission();
-            return ChangeNotifierProvider(
-              create: (_) => DrawerControllerModel(),
-              child: CustomAnimationDrawer(
-                drawer: NotificationsScreen(),
-                child: Scaffold(
-                  body: Stack(
-                    children: [
-                      widget.child,
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: CustomBottomNavigationBar(),
-                      ),
-                    ],
+    return ConsentWrapper(
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => locator<TransactionBloc>(),
+          ),
+          BlocProvider(
+            create: (context) => locator<QrCodeUserBloc>(),
+          ),
+          BlocProvider(
+            create: (context) => locator<LoadNotificationsBloc>(),
+          ),
+        ],
+        child: BlocConsumer<CurrentUserBloc, CurrentUserState>(
+          listener: (context, state) {
+            if (state is CurrentUserStateNotAuthenticated) {
+              GoRouter.of(context).go('/initial');
+            }
+          },
+          builder: (context, state) {
+            if (state is CurrentUserStateAuthenticateWithAccount) {
+              _notificationService.requestPermission();
+              return ChangeNotifierProvider(
+                create: (_) => DrawerControllerModel(),
+                child: CustomAnimationDrawer(
+                  drawer: NotificationsScreen(),
+                  child: Scaffold(
+                    body: Stack(
+                      children: [
+                        widget.child,
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: CustomBottomNavigationBar(),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          }
-          return Container();
-        },
+              );
+            }
+            return Container();
+          },
+        ),
       ),
     );
   }

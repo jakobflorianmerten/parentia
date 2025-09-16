@@ -42,74 +42,77 @@ class _HomeScreenState extends State<HomeScreen> {
             ..add(LoadTransactionsEvent.loadTransactions()),
       child: Builder(
         builder: (context) {
-          return BlocConsumer<QrCodeUserBloc, QrCodeUserState>(
+          return BlocListener<TransactionBloc, TransactionState>(
             listener: (context, state) {
-              if (state is QrCodeUserStateSuccess) {
-                showTransactionWoltModalSheet(
-                  context,
-                  user: state.user,
-                );
-              }
-              if (state is QrCodeUserStateError) {
+              if (state is TransactionStateSuccess) {
                 MessageService.show(
                   context,
-                  title: 'Error loading user',
-                  message: state.errorMessage,
+                  title: AppLocalizations.of(
+                    context,
+                  )!.success_transactionCreatedTitle,
+                  message: AppLocalizations.of(
+                    context,
+                  )!.success_transactionCreatedDescription,
+                  type: MessageType.success,
+                );
+              }
+              if (state is TransactionStateError) {
+                MessageService.show(
+                  context,
+                  title: AppLocalizations.of(
+                    context,
+                  )!.error_defaultMessageTitle,
+                  message: AppLocalizations.of(
+                    context,
+                  )!.error_defaultMessageDescription,
                   type: MessageType.error,
                 );
               }
             },
-            builder: (context, state) {
-              if (state is QrCodeUserStateLoading) {
-                return Center(
-                  child: CustomLoadingAnimationElement(),
-                );
-              }
-              return BlocConsumer<LoadTransactionsBloc, LoadTransactionsState>(
-                listener: (context, state) {
-                  if (state is LoadTransactionsStateError) {
-                    MessageService.show(
-                      context,
-                      title: AppLocalizations.of(
+            child: BlocConsumer<QrCodeUserBloc, QrCodeUserState>(
+              listener: (context, state) {
+                if (state is QrCodeUserStateSuccess) {
+                  showTransactionWoltModalSheet(
+                    context,
+                    user: state.user,
+                  );
+                }
+                if (state is QrCodeUserStateError) {
+                  MessageService.show(
+                    context,
+                    title: 'Error loading user',
+                    message: state.errorMessage,
+                    type: MessageType.error,
+                  );
+                }
+              },
+              builder: (context, state) {
+                if (state is QrCodeUserStateLoading) {
+                  return Center(
+                    child: CustomLoadingAnimationElement(),
+                  );
+                }
+                return BlocConsumer<
+                  LoadTransactionsBloc,
+                  LoadTransactionsState
+                >(
+                  listener: (context, state) {
+                    if (state is LoadTransactionsStateError) {
+                      MessageService.show(
                         context,
-                      )!.error_defaultMessageTitle,
-                      message: AppLocalizations.of(
-                        context,
-                      )!.error_defaultMessageDescription,
-                      type: MessageType.error,
-                    );
-                  }
-                },
-                builder: (context, state) {
-                  if (state is LoadTransactionsStateSuccess) {
-                    return BlocListener<TransactionBloc, TransactionState>(
-                      listener: (context, state) {
-                        if (state is TransactionStateSuccess) {
-                          MessageService.show(
-                            context,
-                            title: AppLocalizations.of(
-                              context,
-                            )!.success_transactionCreatedTitle,
-                            message: AppLocalizations.of(
-                              context,
-                            )!.success_transactionCreatedDescription,
-                            type: MessageType.success,
-                          );
-                        }
-                        if (state is TransactionStateError) {
-                          MessageService.show(
-                            context,
-                            title: AppLocalizations.of(
-                              context,
-                            )!.error_defaultMessageTitle,
-                            message: AppLocalizations.of(
-                              context,
-                            )!.error_defaultMessageDescription,
-                            type: MessageType.error,
-                          );
-                        }
-                      },
-                      child: SafeArea(
+                        title: AppLocalizations.of(
+                          context,
+                        )!.error_defaultMessageTitle,
+                        message: AppLocalizations.of(
+                          context,
+                        )!.error_defaultMessageDescription,
+                        type: MessageType.error,
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is LoadTransactionsStateSuccess) {
+                      return SafeArea(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 20,
@@ -186,8 +189,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ? SliverToBoxAdapter(
                                       child: Text(
                                         AppLocalizations.of(
-                                          context,
-                                        )!.notActiveTransactions.toUpperCase(),
+                                              context,
+                                            )!.notActiveTransactions
+                                            .toUpperCase(),
                                         style: Theme.of(context)
                                             .textTheme
                                             .displaySmall!
@@ -217,20 +221,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                           state.notActiveTransactions[index],
                                     ),
                               ),
-                              SliverToBoxAdapter(child: addVerticalSpace(150)),
+                              SliverToBoxAdapter(
+                                child: addVerticalSpace(150),
+                              ),
                             ],
                           ),
                         ),
-                      ),
-                    );
-                  }
-                  if (state is LoadTransactionsStateLoading) {
-                    return Center(child: CustomLoadingAnimationElement());
-                  }
-                  return Container();
-                },
-              );
-            },
+                      );
+                    }
+                    if (state is LoadTransactionsStateLoading) {
+                      return Center(child: CustomLoadingAnimationElement());
+                    }
+                    return Container();
+                  },
+                );
+              },
+            ),
           );
         },
       ),
