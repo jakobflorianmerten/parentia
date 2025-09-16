@@ -54,6 +54,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get termsOfUse => 'Terms of use';
 
   @override
+  String get impressum => 'Impressum';
+
+  @override
   String get paymentDateDescription =>
       'Select the payment date for this transaction. Your transaction partner will be reminded of the date.';
 

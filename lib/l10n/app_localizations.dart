@@ -188,6 +188,12 @@ abstract class AppLocalizations {
   /// **'Terms of use'**
   String get termsOfUse;
 
+  /// No description provided for @impressum.
+  ///
+  /// In en, this message translates to:
+  /// **'Impressum'**
+  String get impressum;
+
   /// No description provided for @paymentDateDescription.
   ///
   /// In en, this message translates to:
