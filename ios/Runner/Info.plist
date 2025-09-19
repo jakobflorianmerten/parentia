@@ -24,6 +24,8 @@
 		<array>
 			<string>https</string>
 		</array>
+		<key>GOOGLE_ANALYTICS_IDFV_COLLECTION_ENABLED</key>
+		<false />
 		<key>CFBundleSignature</key>
 		<string>????</string>
 		<key>CFBundleVersion</key>
