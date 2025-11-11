@@ -56,17 +56,17 @@ class MoreScreen extends StatelessWidget {
                     GoRouter.of(context).push('/settings');
                   },
                 ),
-                addVerticalSpace(15),
-                NavigatoTWidget(
-                  leadingWidget: Text(
-                    "test crashlytics",
-                    style: Theme.of(context).textTheme.displayMedium,
-                  ),
-                  onPressed: () {
-                    FirebaseCrashlytics.instance.crash();
-                    throw Exception();
-                  },
-                ),
+                // addVerticalSpace(15),
+                // NavigatoTWidget(
+                //   leadingWidget: Text(
+                //     "test crashlytics",
+                //     style: Theme.of(context).textTheme.displayMedium,
+                //   ),
+                //   onPressed: () {
+                //     FirebaseCrashlytics.instance.crash();
+                //     throw Exception();
+                //   },
+                // ),
                 addVerticalSpace(25),
                 ProfileElementWidget(),
               ],
